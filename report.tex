@@ -1,0 +1,75 @@
+
+\documentclass[a4paper,12pt,twoside]{report}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=3cm]{geometry}
+
+\include{report.preamble}
+
+
+\begin{document}
+
+\title{\LARGE {\bf Exploiting the Human Computational Effort Dedicated to Message Reply Formatting for Training Discursive Email Segmenters}\\
+ \vspace*{6mm}
+}
+
+\author{Soufian Salim}
+\submitdate{July 2014}
+
+\normallinespacing
+\maketitle
+
+\preface
+
+\addcontentsline{toc}{chapter}{Abstract}
+
+\begin{abstract}
+
+In the context of multi-domain and multimodal online asynchronous discussion analysis, we propose an innovative strategy for manual annotation of dialog act (DA) segments. The process aims at supporting the analysis of messages in terms of DA. Our objective is to train a sequence labelling system to detect the segment boundaries.  The originality of the proposed approach is to avoid manually annotating the training data and instead exploit the human computational efforts dedicated to message reply formatting  when the writer replies to a message by inserting his response just after the quoted text appropriate to his intervention. We describe the approach, propose a new electronic mail corpus and report the evaluation of segmentation models we built.
+
+\end{abstract}
+
+\cleardoublepage
+
+\addcontentsline{toc}{chapter}{Acknowledgements}
+
+\begin{acknowledgements}
+
+I would like to express gratitude to:
+
+\begin{itemize}
+ \item Nicolas Hernandez
+ \vspace*{3mm}
+ \item Christian Viard-Gaudin
+ \vspace*{3mm}
+ \item The TALN team at LINA
+ \vspace*{3mm}
+ \item Family and friends
+\end{itemize}
+
+\end{acknowledgements}
+
+\body
+
+\input{sections/introduction}
+
+\input{sections/background_and_related_work}
+
+\input{sections/methodology_for_automatic_corpora_annotation}
+
+\input{sections/methodology_for_email_segmentation}
+
+\input{sections/experimental_framework}
+
+\input{sections/experiments_and_results}
+
+\input{sections/conclusion}
+
+\appendix
+% appendices come here
+
+
+
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{alpha}
+\bibliography{bibliography}
+
+\end{document}

@@ -4,45 +4,52 @@
 
 \include{report.preamble}
 
-
 \begin{document}
 
-\title{\LARGE {\bf Exploiting the Human Computational Effort Dedicated to Message Reply Formatting for Training Discursive Email Segmenters}\\
- \vspace*{6mm}
+\title{\LARGE {\bf Segmentation discursive des courriels selon une approche supervisée "paresseuse"}\\
+	\vspace*{6mm}
 }
 
 \author{Soufian Salim}
-\submitdate{July 2014}
+\submitdate{Juillet 2014}
 
 \normallinespacing
 \maketitle
 
 \preface
 
-\addcontentsline{toc}{chapter}{Abstract}
+\begin{resume}
+
+\addcontentsline{toc}{chapter}{Résumé}
+
+Dans le cadre de l'analyse de discussions asynchrones en ligne, multi-modales et multi-domaines, nous proposons une stratégie novatrice pour l'identification de segments d'actes de langage. Le processus décrit vise à soutenir l'analyse de messages en termes d'intention communicative. Notre objectif est de développer un système d'étiquetage de séquences permettant de détecter les frontières entre segments. L'originalité de l'approche proposée vient du fait que nous exploitons les efforts cognitifs effectués par des humains pour la tache de mise en forme de messages de réponse pour éviter d'avoir à effectuer un laborieux travail d'annotation manuelle. Nous décrivons notre approche, proposons un nouveau corpus de courriers électroniques et rapportons l'évaluation des modèles de segmentation ainsi construits.
+
+\end{resume}
 
 \begin{abstract}
 
-In the context of multi-domain and multimodal online asynchronous discussion analysis, we propose an innovative strategy for manual annotation of dialog act (DA) segments. The process aims at supporting the analysis of messages in terms of DA. Our objective is to train a sequence labelling system to detect the segment boundaries.  The originality of the proposed approach is to avoid manually annotating the training data and instead exploit the human computational efforts dedicated to message reply formatting  when the writer replies to a message by inserting his response just after the quoted text appropriate to his intervention. We describe the approach, propose a new electronic mail corpus and report the evaluation of segmentation models we built.
+\addcontentsline{toc}{chapter}{Abstract}
 
-\end{abstract}
+In the context of multi-domain and multimodal online asynchronous discussion analysis, we propose an innovative strategy for the annotation of speech act (SA) segments. The process aims at supporting the analysis of messages in terms of SA. Our objective is to train a sequence labelling system to detect the segment boundaries.  The originality of the proposed approach is to avoid manually annotating the training data and instead exploit the human computational efforts dedicated to message reply formatting  when the writer replies to a message by inserting his response just after the quoted text appropriate to his intervention. We describe the approach, propose a new electronic mail corpus and report the evaluation of segmentation models we built.
 
-\cleardoublepage
-
-\addcontentsline{toc}{chapter}{Acknowledgements}
+\end{abstract} 
 
 \begin{acknowledgements}
 
-I would like to express gratitude to:
+\addcontentsline{toc}{chapter}{Remerciements}
+
+Je voudrais remercier :
 
 \begin{itemize}
- \item Nicolas Hernandez
- \vspace*{3mm}
- \item Christian Viard-Gaudin
- \vspace*{3mm}
- \item TALN team members at LINA
- \vspace*{3mm}
- \item ATAL teachers and students
+	\item Nicolas Hernandez (LINA)
+	\vspace*{3mm}
+	\item Christian Viard-Gaudin (IRCCyN)
+	\vspace*{3mm}
+	\item Nathalie Camelin (LIUM)
+	\vspace*{3mm}
+	\item Les membres de l'équipe TALN au LINA
+	\vspace*{3mm}
+	\item Les enseignants et étudiants du master ATAL
 \end{itemize}
 
 \end{acknowledgements}
@@ -63,13 +70,18 @@ I would like to express gratitude to:
 
 \input{sections/conclusion}
 
-\appendix
-% appendices come here
+\begin{appendices}
 
+\chapter{\textit{Exploiting the human computational effort dedicated to message reply formatting for training discursive email segmenters}}
 
+Article accepté à \textit{The 8th Linguistic Annotation Workshop} (LAW 8), tenu en conjonction avec \textit{The 25th International Conference on Computational Linguistics} (COLING 2014).
 
-\addcontentsline{toc}{chapter}{Bibliography}
-\bibliographystyle{alpha}
+\includepdf[pages=-]{law8.pdf}
+
+\end{appendices}
+
+\addcontentsline{toc}{chapter}{Bibliographie}
+\bibliographystyle{authordate2}
 \bibliography{bibliography}
 
 \end{document}

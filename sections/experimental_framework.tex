@@ -1,28 +1,31 @@
 
-\chapter{Experimental Framework}
+\chapter{Cadre expérimental}
 
-\section{Corpora}
+\label{ch:experimental_framework}
 
-\subsection{Ubuntu Corpus}
+Nous décrivons les corpus et protocoles d'évaluation employés pour effectuer nos expériences.
 
-Ubuntu Corpus.
+\section{Corpus}
 
-\subsection{BC3 Corpus}
+Le travail s'inscrivantt dans le cadre d'un projet portant sur le traitement de discussions multilingues et multimodales, principalement orientées autour des demandes d'informations techniques, nous n'avons pas retenu le corpus Enron (30 000 fils de discussion) \cite{klimt:2004:enron} (qui vient d'un environnement business) ni le corpus W3C (malgré son caractère technique) ou le British Columbia Conversation Corpus (BC3) qui en est tiré \cite{ulrich:2008:bc3}.
 
-BC3 Corpus.
+\subsection{Ubuntu}
 
-\section{Evaluation Protocol}
+Nous préférons employer l'archive de courriels \textit{ubuntu-users}\footnote{Archives des mailing lists Ubuntu: \url{https://lists.ubuntu.com/archives/}} comme corpus principal. Il est gratuit, et distribué sous une license non restrictive. Il continue de grandit perpétuellement, et est donc représentatif des pratiques de messagerie électronique à la fois en terme de contenu et de format. De plus, de nombreuses archives alternatives sont disponibles, dans un grand nombre de langues différentes, y compris certaines langues très pauvres en ressources. Ubuntu propose également un forum et une FAQ qui peuvent se révêler intéressantes dans le contexte d'études multimodales.
 
-Evaluation Protocol.
+Nous utilisons une copie datant de décembre 2013. Le corpus contient un total de 272 380 messages (47 044 fils de conversation). 33 915 d'entre eux sont postés dans le style interfolié qui nous intéresse. Les messages sont faits de 418 858 phrases, elles mêmes constituées de 76 326 tokens uniques (5 139 123 au total). 87 950 de ces phrases (21\%) ont été automatiquement étiquetées par notre système comme débutant un nouveau segment (soit \textit{SE} soit \textit{S}).
 
-\subsection{Methodology}
+\subsection{BC3}
 
-Methodology.
 
-\subsection{Baselines}
+\section{Protocole d'évaluation}
 
-Baselines.
 
-\subsection{Metrics}
+\subsection{Méthodologie}
 
-Metrics.
+
+\subsection{Systèmes de référence}
+
+
+\subsection{Métriques}
+

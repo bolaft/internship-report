@@ -1,178 +1,140 @@
 
-\chapter{Automatic Corpora Annotation}
+\chapter{Étiquetage automatique de corpus}
 
-We present the hypothesis as well as the detailed steps of our approach for automatic corpora annotation.
+\label{ch:methodology_for_automatic_corpora_annotation}
 
-\section{Hypothesis}
+Dans ce chapitre, nous présentons notre hypothèse ainsi que les étapes détaillées de notre approche pour l'étiquetage automatique de corpus.
 
-The basic idea is to interpret the operation performed by a discussion participant on the message he replies to as an annotation operation. 
-% 
-Assumptions about the kind of annotations depend on the operation that has been performed.
-% 
-Deletion or re-use of the original text material can give hints about the relevance of the content: discarded material is probably less relevant than re-used one.
-% 
-We assume that by replying inside a message and by only including some specific parts, the participant performs some cognitive operations to identify homogeneous self-contained text segments.
+\section{Hypothèses}
 
-\section{Annotation Scheme}
+Nous partons du postulat que, lorsqu'un internaute reprend certains passages du courriel auquel il répond dans son message, il effectue des opérations cognitives pour identifier des fragments de texte autonomes et homogènes. Ces opérations peuvent être interpretées comme des opérations d'annotation. Les suppositions que l'on peut faire sur le type d'annotation dont il s'agit dépendent de l'opération qui a été effectuée. La suppression ou la reprise de texte original peut donner des indices sur la pertinence du contenu : du texte rejeté est probablement moins pertinent que du texte réutilisé.
 
-Consequently, we make some assumptions about the role played by the sentences in the original message information structure.
+\section{Schéma d'annotations}
 
-A sentence in a segment plays one of the following roles:
-%\indent $\bullet$ 
-\texttt{\footnotesize starting and ending} (\textit{SE}) a segment when there is only one sentence in the segment, %\\
-%\indent $\bullet$ 
-\texttt{\footnotesize starting} (\textit{S}) a segment if there are at least two sentences in the segment and it is the first one, %\\
-%\indent $\bullet$
-\texttt{\footnotesize ending} (\textit{E}) a segment if there are at least two sentences in the segment and it is the last one, %\\
-%\indent $\bullet$
-\texttt{\footnotesize inside} (\textit{I}) a segment in any other cases.
+Nous supposons que lorsqu'une personne ajoute du nouveau contenu entre deux blocs de texte cité, il effectue un découpage du message original. Par conséquent, nous pouvons effectuer certaines suppositions par rapport au role joué par ces phrases dans la structure informationnelle du message d'origine. Une phrase dans un segment peut jouer l'un des roles suivants: \emph{starting and ending} (\textit{SE}), si elle constitue un segment à elle seule, \emph{starting} (\textit{S}), si elle débute un segment, \emph{inside} (\textit{I}), si elle n'est ni en début ni en fin de segment, et \emph{ending} (\textit{E}), si elle termine un segment.
 
-Figure~\ref{fig:exampleSegmentationLabels} illustrates the scheme by showing how sentences from Figure~\ref{fig:exampleSourceReplyMessage} can be aligned and the labels inferred from it. 
-% 
-% It is similar to the \textit{BIO} scheme except it is not at the token level but at the sentence level \cite{ratinov:2009:conll}.
+Ce schéma est similaire au schéma \emph{BIO} à la différence qu'il est appliqué au niveau de la phrase et non au niveau du token \cite{ratinov:2009:conll}.
 
-\section{Annotation Generation Procedure}
+La figure~\ref{fig:exampleSegmentationLabels} illustre ce schéma en montrant comment les phrases de la figure~\ref{fig:exampleSourceReplyMessage} peuvent être alignées et comment les étiquettes peuvent en être inférées.
 
-Before being able to predict labels of the original message sentences, it is necessary to identify those that are re-used in a reply message. 
-%
-Identification of quoted lines in a reply message is not sufficient for various reasons:
+\section{Procédure de génération des données annotées}
 
-First, the segmenter is intended to work on non-noisy data (i.e. the new content parts in the messages) while a quoted message is an altered version of the original one. 
-% 
-Indeed, some email software clients involved in the discussion are not always standards-compliant and totally compatible\footnote{The \textit{Request for Comments} (RFC) are guidelines and protocols proposed by working groups involved in the Internet Standardization \url{https://tools.ietf.org/html}, the message contents suffer from encoding and decoding problems. Some of the RFC are dedicated to email format and encoding specifications (See RFC 2822 and 5335 as starting points). There have been several propositions with updates and consequently obsoleted versions which may explain some alteration issues.}. 
-%
-In particular, the quoted parts can be wrongly re-encoded at each exchange step due to the absence of dedicated header information.
-% 
-In addition, the client programs can integrate their own mechanisms for quoting the previous messages when including them as well as for wrapping too long lines\footnote{Feature for making the text readable without any horizontal scrolling by splitting lines into pieces of about 80 characters.}.
+Avant de pouvoir prédire les labels des phrases du message originel, il est nécessaire d'identifier celles qui ont été réutilisées dans un message de réponse. L'identification des lignes citées dans le message de réponse est insuffisant pour diverses raisons.
 
-Second, accessing the original message may allow taking some contextual features into consideration (like the visual layout for example). 
+Premièrement, le segmenteur est supposé fonctionner sur des données non-bruitées (i.e. les nouveaux contenus dans les messages) alors qu'un texte cité est une version altérée du texte original. En effet, certains clients de messagerie électronique ne respectent pas toujours les standards et ne sont pas focément toujours compatibles\footnote{Les \textit{Request for Comments} (RFC) sont des règles et protocoles proposés par les groupes de travail participant à l'\textit{Internet Standardization} (\url{https://tools.ietf.org/html}). Certains RFC sont consacrés aux formats des courriels et aux spécifications d'encodage (voir RFC 2822 et 5335 pour commencer). Il y a eu de nombreuses propositions, parfois mises à jours et donc parfois rendues caduques, ce qui peut expliquer certains problèmes de compatibilité)}. En particulier, l'absence de certaines métadonnées peut causer le mauvais ré-encodage des blocs de citation à chaque échange. De plus, les programmes clients peuvent intégrer leurs propres mécanismes pour citer les précédents messages, ou encore tronquer les lignes trop longues\footnote{Fonctionnalité utilisée pour rendre le texte lisible sans avoir à scroller horizontalement. Les phrases sont généralement découpées en segments d'environ 80 caractères.}.
 
-Third, to go further, the original context of the extracted text also conveys some segmentation information. For instance, a sentence from the original message, not present in the reply, but following an aligned sentence, can be considered as starting a segment.
+Deuxièmement, accéder aux messages originels peut permettre de prendre en compte certains traits contextuels (comme la disposition visuelle par exemple).
 
-So in addition to identifying the quoted lines, we deploy an alignment procedure to get the original version of the quoted text. 
-In this paper, we do not consider the contextual features from the original message and focus only on sentences that have been aligned. 
-% 
-The generation procedure is intended to "automatically" annotate sentences from the original messages with segmentation information.
-% 
-The procedure follows the following steps:
+Troisièmement, pour aller plus loin, le context original du texte extrait contient également de l'information sur la segmentation d'un message. Par exemple, une phrase du message originel, qui ne serait pas présente dans la réponse, mais qui suit une phrase alignée, peut être considérée comme débutant un nouveau segment.
 
-\fbox {
-    \parbox{\linewidth}{
-        \small
-		\begin{enumerate}
-			\item Messages posted in the interleaved replying style are identified
-			\item For each pair of original and reply messages:
-			\begin{enumerate}
-				\item Both messages are tokenized at sentence and at word levels
-				\item Quoted lines in the reply message are identified
-				\item Sentences which are part of the quoted text in the reply message are identified 
-				\item Sentences in the original message are aligned with quoted text in the reply message \footnote{Section~\ref{secalignmentmodule} details how alignment is performed.}
-				\item Aligned original sentences are labelled in terms of position in segment 
-				\item The sequence of labelled sentences is added to the training data 
-			\end{enumerate}
-		\end{enumerate}
-	}
-}
+Don, en plus d'identifier les lignes citées, nous déployons une procédure d'alignement pour obtenir la version originale du texte cité. La procédure décrite étiquette les phrases de messages sources avec une information sur leur segmentation. Elle suit les étapes suivantes :
 
-Messages with \textit{inline replying} are recognized thanks to the presence of at least two consecutive quoted lines separated by new content lines.
-% 
-Pairs of original and reply messages are constituted based on the \texttt{\footnotesize in-reply-to} field present in the email headers.
-% 
-As declared in the RFC~3676\footnote{\url{http://www.ietf.org/rfc/rfc3676.txt}}, we consider as \textit{quoted lines}, the lines beginning with the "\texttt{>}" (greater than) sign.
-% 
-Lines which are not quoted lines are considered to be \textit{new content} lines.
-% 
-The word tokens are used to index the quoted lines and the sentences. 
+\begin{enumerate}
+    \item Les messages postés dans le style interfolié sont identifiés
+    \item Pour chaque paire message source / réponse :
+    \begin{enumerate}
+        \item Les deux messages sont tokenisés au niveau de la phrase et du mot (voir sous-section~\ref{subsec:tokenization} pour le détail des techniques employées pour la tokenisation)
+        \item Les lignes de citations dans la réponse sont identifiées
+        \item Les phrases qui font partie du texte cité dans le message de réponse sont identifiées
+        \item Les phrases du message d'origine sont alignées avec le texte cité dans la réponse (voir sous-section~\ref{subsec:tokenization} pour le détail de la procédure d'alignement)
+        \item Les phrases alignées sont étiquetées (voir sous-section~\ref{subsec:labelling} pour le détail de l'algorithme d'étiquetage)
+        \item La séquence de phrases alignées est ajoutée au jeu de données
+    \end{enumerate}
+\end{enumerate}
+
+Les messages contenant des messages à contenu interfolié sont reconnus grâce à la présence d'au moins deux lignes citées consécutives séparées par des lignes de nouveau contenu. Les paires de messages sources et leur réponse sont constituées à partir des champs \emph{in-reply-to} de leurs entêtes. Comme déclaré dans le RFC 3676\footnote{\url{http://www.ietf.org/rfc/rfc3676.txt}}, nous considérons comme des lignes citées les lignes commençant par le symbole "\textgreater" (chevron). Les lignes qui ne sont pas des lignes citées sont considérées comme étant des nouvelles lignes. Les tokens sont utilisés pour indexer les lignes citées et les phrases.
 
 \subsection{Tokenization}
 
-Tokenization.
+\label{subsec:tokenization}
 
-\subsection{Alignment}
+\subsection{Alignement}
 
-For finding alignments between two given text messages, we use a \textit{dynamic programming (DP) string alignment algorithm} \cite{sankoff:1983}.
-% 
-In the context of speech recognition, the algorithm is also known as the \textit{NIST align/scoring algorithm}. Indeed, it is widely used to evaluate the output of speech recognition systems by comparing the hypothesized text output by the speech recognizer to the correct, or reference text. 
-% 
-In particular, it is used to compute the word error rate (WER) and the sentence error rate (SER).
-% 
-The algorithm works by ``performing a global minimization of a Levenshtein distance function which weights the cost of correct words, insertions, deletions and substitutions as 0, 75, 75 and 100 respectively. The computational complexity of DP is $O(MN)$.''
+\label{subsec:alignment}
 
-The Carnegie Mellon University provides an implementation of the algorithm in its speech recognition toolkit\footnote{Sphinx 4 \texttt{edu.cmu.sphinx.util.NISTAlign} \url{http://cmusphinx.sourceforge.net}}.
-%
-We use an adaptation of it which allows working on lists of strings\footnote{\url{https://github.com/romanows/WordSequenceAligner}} rather than directly on strings (as sequences of characters).
+Pour trouver les alignements entre deux messages donnés, nous utilisons un algorithme d'alignement de chaînes basé sur la programmation dynamique (DP) \cite{sankoff:1983}. Dans le contexte de la reconnaissance de la parole, cet algorithme est aussi connu sous le nom de \textit{NIST align/scoring algorithm}. En effet il est largement utilisé pour évaluer les systèmes de reconnaissance de la parole en comparant leurs sorties au texte de référence. Il est utilisé en particulier pour calculer deux taux d'erreur : le \textit{Word Error Rate} (WER) et le \textit{Sentence Error rate} (SER).
 
-\subsection{Label Attribution}
+L'algorithme fonctionne en effectuant une réduction de la distance de Levenshtein en attribuant aux mots corrects, aux insertions, aux suppressions et aux substitutions des poids respectifs de 0, 75, 75 et 100. L'algorithme est de complexité $O(MN)$.
 
-The labelling of aligned sentences (sentences from the original message re-used in the reply message) is performed by this simple rule-based algorithm:
+L'Université de Carnegie Mellon fournit une implémentation de cet algorithme dans son kit de reconnaissance de la parole\footnote{Sphinx 4, $edu.cmu.sphinx.util.NISTAlign$, \url{http://cmusphinx.sourceforge.net}}
+
+\subsection{Étiquetage}
+
+\label{subsec:labelling}
+
+L'étiquetage d'une phrase alignée (phrase du message source réutilisée dans la réponse) se fait suivant un simple algorithme à base de règles :
 
 \fbox {
     \parbox{\linewidth}{
         \small
-		\begin{itemize}
-			\item[] For each aligned original sentence: \vspace{-0.2cm}
-			\begin{itemize}
-				\item[] if the sentence is surrounded by new content in the reply message, the label is \texttt{\footnotesize Start\&End}
-				\item[] else if the sentence is preceded by a new content, the label is \texttt{\footnotesize Start}
-				\item[] \indent else if the sentence is followed by a new content, the label is \texttt{\footnotesize End}
-				\item[] else, the label is \texttt{\footnotesize Inside}
-			\end{itemize}
-		\end{itemize}
-	}
+        \vspace{3mm}
+        \begin{itemize}
+            \item[] Pour chaque phrase source alignée :
+            \begin{itemize}
+                \item[] si la phrase est entourée par du nouveau contenu dans la réponse, l'étiquette est \texttt{\footnotesize Start\&End}
+                \item[] sinon si la phrase est précédée par du nouveau contenu, l'étiquette est \texttt{\footnotesize Start}
+                \item[] sinon si la phrase est suivie par du nouveau contenu, l'étiquette est \texttt{\footnotesize End}
+                \item[] sinon, l'étiquette est \texttt{\footnotesize Inside}
+            \end{itemize}
+        \end{itemize}
+        \vspace{3mm}
+    }
 }
 
 \begin{figure}
     \begin{minipage}{\textwidth}
         \fbox {
             \parbox{\linewidth}{
-                \begin{subfigure}
-                    \small
-                    [Hi!]$^{S1}$\vspace{0.3cm}
+                \vspace{3mm}
+                \small
+                [Hi!]$^{S1}$\vspace{0.3cm}
 
-                    [I got my ubuntu cds today and i'm really impressed.]$^{S2}$ [My friends like them and my teachers too (i'm a student).]$^{S3}$ [It's really funny to see, how people like ubuntu and start feeling geek and blaming microsoft when they use it.]$^{S4}$ \vspace{0.3cm}
+                [I got my ubuntu cds today and i'm really impressed.]$^{S2}$ [My friends like them and my teachers too (i'm a student).]$^{S3}$ [It's really funny to see, how people like ubuntu and start feeling geek and blaming microsoft when they use it.]$^{S4}$ \vspace{0.3cm}
 
-                    [Unfortunately everyone wants an ubuntu cd, so can i download the cd covers anywhere or an 'official document' which i can attach to self-burned cds?]$^{S5}$\vspace{0.3cm}
+                [Unfortunately everyone wants an ubuntu cd, so can i download the cd covers anywhere or an 'official document' which i can attach to self-burned cds?]$^{S5}$\vspace{0.3cm}
 
-                    [I searched the entire web site but found nothing.]$^{S6}$ [Thanks in advance.]$^{S7}$\vspace{0.3cm}
+                [I searched the entire web site but found nothing.]$^{S6}$ [Thanks in advance.]$^{S7}$\vspace{0.3cm}
 
-                    [John]$^{S8}$
+                [John]$^{S8}$
 
-                    \caption{Original message.}
-                    \label{fig:exampleSource}
-                \end{subfigure}%
+                \vspace{3mm}
             }
         }
-        \vspace{0.2cm}
-        \\
+
+        \begin{center}
+        Message source.
+        \end{center}
+        
         \fbox {
             \parbox{\linewidth}{
-                \begin{subfigure}
-                    \small
-                    [On Sun, 04 Dec 2005, John Doe 
-                    \textless john@doe.com\textgreater wrote:]$^{R1}$\vspace{0.3cm}
+                \vspace{3mm}
+                \small
+                [On Sun, 04 Dec 2005, John Doe 
+                \textless john@doe.com\textgreater wrote:]$^{R1}$\vspace{0.3cm}
 
-                    \textgreater [I got my ubuntu cds today and i'm really impressed.]$^{R2}$ [My friends like them and \\ \
-                    \textgreater my teachers too (i'm a student).]$^{R3}$ [It's really funny to see, how people like ubuntu \\ \
-                    \textgreater and start feeling geek and blaming microsoft when they use it.]$^{R4}$\vspace{0.3cm}
+                \textgreater [I got my ubuntu cds today and i'm really impressed.]$^{R2}$ [My friends like them and \\ \
+                \textgreater my teachers too (i'm a student).]$^{R3}$ [It's really funny to see, how people like ubuntu \\ \
+                \textgreater and start feeling geek and blaming microsoft when they use it.]$^{R4}$\vspace{0.3cm}
 
-                    [Rock!]$^{R5}$\vspace{0.3cm}
+                [Rock!]$^{R5}$\vspace{0.3cm}
 
-                    \textgreater [Unfortunately everyone wants an ubuntu cd, so can i download the cd covers \\ \ 
-                    \textgreater anywhere or an 'official document' which i can attach to self-burned cds?]$^{R6}$\vspace{0.3cm}
+                \textgreater [Unfortunately everyone wants an ubuntu cd, so can i download the cd covers \\ \ 
+                \textgreater anywhere or an 'official document' which i can attach to self-burned cds?]$^{R6}$\vspace{0.3cm}
 
-                    [We don't have any for the warty release, but we will have them for hoary, %\\ \ 
-                    because quite a few people have asked. :-)]$^{R7}$\vspace{0.3cm}
+                [We don't have any for the warty release, but we will have them for hoary, %\\ \ 
+                because quite a few people have asked. :-)]$^{R7}$\vspace{0.3cm}
 
-                    [Bob.]$^{R8}$ %\vspace{0.1cm}
-
-                    \caption{Reply message.}
-                    \label{fig:exampleReply}
-                \end{subfigure}
+                [Bob.]$^{R8}$ %\vspace{0.1cm}
+                \vspace{3mm}
             }
         }
-    \end{minipage}\vspace{1cm}
+        
+        \begin{center}
+        Message de réponse.
+        \end{center}
+    \end{minipage}
 
-    \caption{An original message and its reply (\textit{ubuntu-users} email archive). Sentences have been tagged.}
+    \caption{Un message originel (ou "message source") et sa réponse (tirés de l'archive de courriers électroniques \textit{ubuntu-users}). Les différentes phrases ont été clairement indiquées.}
     \label{fig:exampleSourceReplyMessage}
 \end{figure}
 
@@ -181,8 +143,8 @@ The labelling of aligned sentences (sentences from the original message re-used 
         \small\centering
         \begin{tabular}{*{2}{|l}|c|}
         \hline
-        \textbf{Original} & \textbf{Reply} & \textbf{Label}\\
-        	\hline
+        \textbf{Source} & \textbf{Réponse} & \textbf{Étiquette}\\
+            \hline
             S1  & & \\
             & R1 & \\
             \textit{S2}  & \textgreater \textit{R2}& \texttt{Start}\\
@@ -192,12 +154,12 @@ The labelling of aligned sentences (sentences from the original message re-used 
             \textit{S5}  & \textgreater \textit{R6} & \texttt{Start\&End}\\
             & R7 & \\
             & [...] & \\
-            S6    &  & \\ \ 
-            [...] \    &  & \\
+            S6 &  & \\ \ 
+            [...] &  & \\
             \hline
         \end{tabular}
     \end{minipage}
 
-    \caption{Alignment of the sentences from the original and reply messages shown in Figure~\ref{fig:exampleSourceReplyMessage} and labels inferred from the re-use of the original message text. Labels are associated to the original sentences.}
+    \caption{Alignement des phrases tirées des messages montrés dans la figure~\ref{fig:exampleSourceReplyMessage}, ainsi que les étiquettes inferrées de la reprise de texte du message source. Les étiquettes sont associées au phrases d'origine.}
     \label{fig:exampleSegmentationLabels}
 \end{figure}

@@ -10,24 +10,30 @@
 
 \def\maketitle{
   \begin{titlepage}{
+    \includegraphics{univnantes.jpg}
     %\linespread{1.5}
-    \Large Université de Nantes \\
+    \par
     %\linebreak
-    UFR Sciences et Techniques \\
+    \Large UFR Sciences et Techniques \\
     %\linebreak
     Département d'Informatique
     \rm
-    \vskip 3in
+    \par
+    \vskip 1in
     \Large \bf \@title \par
   }
   \vskip 0.3in
   \par
   {\Large \@author}
-  \vskip 4in
   \par
-  Submitted in part fulfilment of the requirements for the degree of 
+  encadré par Nicolas Hernandez et tutoré par Christian Viard-Gaudin
+  \vskip 1.25in
+  \includegraphics{lina.png}
+  \vskip 1.25in
+  \par
+  Soumis dans le cadre de l'obtention du diplôme
   \linebreak
-  Master of Science in Computer Science
+  \textit{Master en Informatique}
   \linebreak
   \@submitdate
   \vfil
@@ -63,10 +69,23 @@
   \par
 }
 
+\def\resume{
+  \begin{center}{
+    \large\bf Résumé}
+  \end{center}
+  \small
+  %\def\baselinestretch{1.5}
+  \linespread{1.5}
+  \normalsize
+}
+\def\endresume{
+  \par
+}
+
 \newenvironment{acknowledgements}{
   \cleardoublepage
   \begin{center}{
-    \large \bf Acknowledgements}
+    \large \bf Remerciements}
   \end{center}
   \small
   \linespread{1.5}

@@ -1,34 +1,36 @@
 
-\chapter{Email Segmentation}
+\chapter{Segmentation de courriels}
 
-\section{Sequence Labelling}
+\label{ch:methodology_for_email_segmentation}
 
-Sequence Labelling.
+Nous présentons notre approche pour la segmentation de courriels ainsi que les traits utilisés pour l'apprentissage.
 
-\section{Feature Sets}
+\section{Étiquetage de séquences}
 
-Feature Sets.
+Chaque courriel est traité comme une séquence de phrases. Nous choisissons de traiter le problème de la segmentation comme une tache d'étiquetage de séquences dont l'objectif est d'attribuer globalement le meilleur ensemble d'étiquettes pour la séquence entière d'un seul coup. L'idée sous-jacente est que l'étiquette la plus pertinente pour une phrase est dépendante des traits et de l'étiquette des phrases proches. Notre segmenteur est basé sur un classifieur utilisant les champs aléatoires de Markov, tel qu'implémenté dans le programme d'étiquetage de séquences \textit{Wapiti} \cite{lavergne2010practical}. Nous fixons la taille de la fenêtre à 5, c'est à dire que l'algorithme prend en compte non seulement les traits de la phrase qu'il cherche à étiqueter mais également ceux des deux phrases précédentes et des deux phrases suivantes.
 
-\subsection{Lexical Features}
+Entraîner le classifieur à reconnaître les différents labels du schéma d'annotation précédemment déterminé peut être problématique. En effêt, il présente certains inconvénients qui peut nuire à l'efficacité du classifieur. En particulier, les phrases étiquetées \textit{SE} partageront, par définition, d'importantes caractéristiques avec les phrases étiquetées \textit{S} et \textit{E}. Nous choisissons donc de transformer ces annotations en un schéma binaire et nous contentons de différencier les phrases qui débutent un nouveau segment (\textit{True}), ou les "phrases-frontières", de celles qui ne débutent pas un nouveau segment (\textit{False}). Le processus de conversion est trivial, et peut facilement être inversé \footnote{Les phrases étiquetées \textit{SE} ou \textit{S} sont converties en \textit{True}, les autres en \textit{False}. Pour retrouver les étiquettes d'origine, un \textit{True} est changé en \textit{SE} si la phrase suivante est aussi une frontière (i.e. \textit{True})} et en \textit{S} dans le cas contraire. Un \textit{False} est changé en \textit{E} si la phrase suivante est une frontière (i.e. \textit{True}) et en \textit{I} dans le cas contraire.
 
-Lexical Features.
+\section{Ensembles de traits}
 
-\subsection{Contextual Features}
+On distingue cinq ensembles de traits : les $n$-grammes, les traits basés sur la théorie de la structure de l'information, les traits thématiques, les traits stylistiques et les traits sémantiques (pour les expériences, les deux derniers ensembles sont regroupés sous l'appelation "traits divers"). Tous les traits sont indépendants du domaine et presque tous les traits sont indépendants du langage, à l'exception de certains (les traits sémantiques) qui peuvent être facilement traduits.
 
-Contextual Features.
+\subsection{$n$-grammes}
 
-\subsection{Semantic Features}
+On sélectionne, de manière insensible à la casse, les 1000\footnote{Valeur estimée empiriquement.} bigrammes et les trigrammes avec la plus haut taux de présence dans les phrases du corpus (\textit{Document Frequency}). Puisque la probabilité d'avoir de multiples occurrences d'un même $n$-gramme dans une phrase est extrêmement faible, nous ne conservons pas le nombre d'occurrences mais une valeur booléenne pour ne considérer que la présence ou l'absence du $n$-gramme.
 
-Semantic Features.
+\subsection{Traits basés sur la théorie de la structure de l'information}
 
-\subsection{Stylistic Features}
+Cet ensemble de traits est inspuré de la théorie de la structure de l'information \cite{kruijff:1996} qui décrit l'information portée par une phrase en fonction de la façon dont elle est reliée à son contexte. La théorie lie ces fonctions avec des constructions syntaxiques particulières (e.g. thématisation) et des contraintes sur l'ordre des mots dans la phrase. On s'intéresse aux trois premiers et derniers tokens significatifs de la phrase. Un token est considéré comme significatif si sa fréquence est supérieure à 1/2 000\footnote{Cette valeur a été déterminée empiriquement par rapport à nos données. Un travail supplémentaire devra être effectué pour la généraliser.}. Comme traits, nous utilisons les $n$-grammes des formes de surface, du lemme et de l'étiquette morpho-syntaxique de chaque triplet (soit un total de 36 traits).
 
-Stylistic Features.
+\subsection{Trait thématique}
 
-\subsection{Morpho-Syntactic Features}
+Le seul trait que nous prenons en compte pour la reconnaissance des variations thématiques est la sortie de l'algorithme \textit{TextTiling} \cite{hearst1997texttiling}. \textit{TextTiling} est l'un des algorithmes les plus communément utilisés pour la segmentation automatique de texte. Si l'algorithme détecte une rupture dans la cohésion lexicale du text (entre deux blocs consécutifs), il place une frontière pour indiquer un changement thématique. En raison de la taille relativement courte des courriels, nous définissons la taille d'un bloc comme égale à trois fois la taille moyenne d'une phrase dans notre corpus. Nous définissons la "taille-étape" (la distance parcouru par la fenêtre glissante à chaque étape) comme égale à la taille moyenne d'une phrase du corpus.
 
-Morpho-Syntactic Features.
+\subsection{Traits divers}
 
-\subsection{Algorithmic Features}
+Cet ensemble inclut les traits stylistiques et sémantiques. Il contient 24 traits, plusieurs ayant été empruntés à des travaux dans le domaine de la classification d'actes de dialogue \cite{qadir2011classifying} et de la segmentation de courriels \cite{lampert2009segmenting}. 
 
-Algorithmic Features.
+Les traits stylistiques capturent l'information portant sur la structure visuelle et la composition du message : la position de la phrase dans le courriel, la taille moyenne de ses tokens, le nombre total de tokens et de caractères, la proportion de majuscules, de caractères alphabétiques, de caractères numériques, le nombre de chevrons, si la phrase finit sur ou contient un point d'interrogation, une virgule ou un point-virgule, si la phrase contient des caractères de ponctuation parmi ses trois premiers tokens (pour reconnaître les salutations \cite{qadir2011classifying}).
+
+Les traits sémantiques cherchent à identifier certains mots et formules particuliers : si la phrase commence par ou contient un mot interrogatif de type "wh" (e.g. "\textit{what}", "\textit{why}"...) ou une forme interrogative (e.g. "\textit{is it}", "\textit{are there}"...), si la phrase contient un modal, si la phrase contient une formule de planification (e.g. "\textit{I will}", "\textit{we are going to}"...), si la phrase contient des indices de la première (e.g. "\textit{we}", "\textit{my}"...), deuxième ou troisième personne, le premier pronom personnel trouvé dans la phrase, et la première forme verbale rencontrée.

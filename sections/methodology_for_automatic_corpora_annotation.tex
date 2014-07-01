@@ -11,7 +11,7 @@ Nous partons du postulat que, lorsqu'un internaute reprend certains passages du 
 
 \section{Schéma d'annotations}
 
-Nous supposons que lorsqu'une personne ajoute du nouveau contenu entre deux blocs de texte cité, il effectue un découpage du message original. Par conséquent, nous pouvons effectuer certaines suppositions par rapport au role joué par ces phrases dans la structure informationnelle du message d'origine. Une phrase dans un segment peut jouer l'un des roles suivants: \emph{starting and ending} (\textit{SE}), si elle constitue un segment à elle seule, \emph{starting} (\textit{S}), si elle débute un segment, \emph{inside} (\textit{I}), si elle n'est ni en début ni en fin de segment, et \emph{ending} (\textit{E}), si elle termine un segment.
+Nous supposons que lorsqu'une personne ajoute du nouveau contenu entre deux blocs de texte cité, il effectue un découpage du message original. Nous supposons que la partie citée consiste en une unité d'information homogène. Par exemple, on peut supposer que la première phrase d'une partie citée comporte des instructions pour ouvrir un nouveau segment de discours tandis que la dernière phrase comporte des instructions pour achever le seegment. Par conséquent, nous pouvons effectuer certaines suppositions par rapport au role joué par ces phrases dans la structure informationnelle du message d'origine. On suppose qu'un message peut être divisé en segments du discours subsequents et consécutifs, chacun porteur de son propre acte du dialogue. On prend la phrase comme unité élémentaire. Une phrase dans un segment peut jouer l'un des roles suivants: \emph{starting and ending} (\textit{SE}), si elle constitue un segment à elle seule, \emph{starting} (\textit{S}), si elle débute un segment, \emph{inside} (\textit{I}), si elle n'est ni en début ni en fin de segment, et \emph{ending} (\textit{E}), si elle termine un segment.
 
 Ce schéma est similaire au schéma \emph{BIO} à la différence qu'il est appliqué au niveau de la phrase et non au niveau du token \cite{ratinov:2009:conll}.
 
@@ -64,22 +64,15 @@ L'Université de Carnegie Mellon fournit une implémentation de cet algorithme d
 
 L'étiquetage d'une phrase alignée (phrase du message source réutilisée dans la réponse) se fait suivant un simple algorithme à base de règles :
 
-\fbox {
-    \parbox{\linewidth}{
-        \small
-        \vspace{3mm}
-        \begin{itemize}
-            \item[] Pour chaque phrase source alignée :
-            \begin{itemize}
-                \item[] si la phrase est entourée par du nouveau contenu dans la réponse, l'étiquette est \texttt{\footnotesize Start\&End}
-                \item[] sinon si la phrase est précédée par du nouveau contenu, l'étiquette est \texttt{\footnotesize Start}
-                \item[] sinon si la phrase est suivie par du nouveau contenu, l'étiquette est \texttt{\footnotesize End}
-                \item[] sinon, l'étiquette est \texttt{\footnotesize Inside}
-            \end{itemize}
-        \end{itemize}
-        \vspace{3mm}
-    }
-}
+\begin{itemize}
+    \item[\bullet] Pour chaque phrase source alignée :
+    \begin{itemize}
+        \item[\bullet] si la phrase est entourée par du nouveau contenu dans la réponse, l'étiquette est \texttt{Start\&End}
+        \item[\bullet] sinon si la phrase est précédée par du nouveau contenu, l'étiquette est \texttt{Start}
+        \item[\bullet] sinon si la phrase est suivie par du nouveau contenu, l'étiquette est \texttt{End}
+        \item[\bullet] sinon, l'étiquette est \texttt{Inside}
+    \end{itemize}
+\end{itemize}
 
 \begin{figure}
     \begin{minipage}{\textwidth}

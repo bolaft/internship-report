@@ -7,25 +7,32 @@ Nous décrivons les corpus et protocoles d'évaluation employés pour effectuer 
 
 \section{Corpus}
 
-Le travail s'inscrivantt dans le cadre d'un projet portant sur le traitement de discussions multilingues et multimodales, principalement orientées autour des demandes d'informations techniques, nous n'avons pas retenu le corpus Enron (30 000 fils de discussion) \cite{klimt:2004:enron} (qui vient d'un environnement business) ni le corpus W3C (malgré son caractère technique) ou le British Columbia Conversation Corpus (BC3) qui en est tiré \cite{ulrich:2008:bc3}.
-
-\subsection{Ubuntu}
+Le travail s'inscrivant dans le cadre d'un projet portant sur le traitement de discussions multilingues et multimodales, principalement orientées autour des demandes d'informations techniques, nous n'avons pas retenu le corpus Enron (30 000 fils de discussion) \cite{klimt:2004:enron} (qui vient d'un environnement business) ni le corpus W3C (malgré son caractère technique) ou le British Columbia Conversation Corpus (BC3) qui en est tiré \cite{ulrich:2008:bc3}.
 
 Nous préférons employer l'archive de courriels \textit{ubuntu-users}\footnote{Archives des mailing lists Ubuntu: \url{https://lists.ubuntu.com/archives/}} comme corpus principal. Il est gratuit, et distribué sous une license non restrictive. Il continue de grandit perpétuellement, et est donc représentatif des pratiques de messagerie électronique à la fois en terme de contenu et de format. De plus, de nombreuses archives alternatives sont disponibles, dans un grand nombre de langues différentes, y compris certaines langues très pauvres en ressources. Ubuntu propose également un forum et une FAQ qui peuvent se révêler intéressantes dans le contexte d'études multimodales.
 
 Nous utilisons une copie datant de décembre 2013. Le corpus contient un total de 272 380 messages (47 044 fils de conversation). 33 915 d'entre eux sont postés dans le style interfolié qui nous intéresse. Les messages sont faits de 418 858 phrases, elles mêmes constituées de 76 326 tokens uniques (5 139 123 au total). 87 950 de ces phrases (21\%) ont été automatiquement étiquetées par notre système comme débutant un nouveau segment (soit \textit{SE} soit \textit{S}).
 
-\subsection{BC3}
-
-
 \section{Protocole d'évaluation}
 
-
-\subsection{Méthodologie}
-
+Pour évaluer l'efficacité du segmenteur, nous effectuons une validation croisée à 10 échantillons sur le corpus Ubuntu, et comparons ses performances à deux systèmes de référence distincts. Les résultats sont mesurés par l'intermédiaire d'un ensemble de métriques utilisées en segmentation de texte et en recherche d'information (RI).
 
 \subsection{Systèmes de référence}
 
+Le premier système de référence, le système ``régulier'', est calculé en segmentant l'ensemble de test en segments réguliers de même taille que le segment moyen pour l'ensemble d'entraînement, arrondi au supérieur. Le second est l'algorithme \textit{TextTiling} que nous avions décrit au chapitre~\ref{ch:methodology_for_email_segmentation}. Bien qu'utilisée comme un trait dans l'approche proposée dans ce chapitre, ici c'est la sortie directe de l'algorithme qui est utilisée comme point de comparaison.
 
 \subsection{Métriques}
 
+La Précision ($P$) et le Rappel ($R$) sont fournis pour tous les résultats. $P$ est le pourcentage de frontières identifiées par le classifieur qui sont bien de vraies frontières. $R$ est le pourcentage de vraies frontières qui ont été correctement identifiées par le classifieur. Nous fournissons également la mesure $F_1$ qui représente leur pondération :
+
+\[
+F_1 = 2 \cdot \frac{P \cdot R}{P + R}
+\]
+
+Cependant, l'évaluation automatique de segmentations de textes au travers de ces seules métriques est problématique car les segments prédits sont rarement précisément alignés avec les segments de référence. De plus, tandis qu'un segmenteur qui place des frontières près des vrais emplacements de frontière est presque toujours plus approprié qu'un segmenteur qui rate par une marge bien plus grande, la Précision et le Rappel pénaliseraient les deux dans la même mesure. Par conséquent, pour pouvoir évaluer des degrés variés de succès et d'échec de manière plus subtile, nous proposons également un ensemble de métriques pertinentes dans le cadre de l'évaluation de segmentation de textes : ${P_{k}}$, \textit{WindowDiff} et la \textit{Distance de Hamming Généralisée (GHD)}.
+
+La mesure ${P_{k}}$ est une mesure d'erreur probabilistiquement motivée pour l'évaluation d'algorithmes de segmentation \cite{beeferman1999statistical}.
+
+\textit{WindowDiff} compart le nombre de frontières trouvées dans une fenêtre de taille définie au nombre de frontières trouvées dans la même fenêtre de texte pour la segmentation de référence.
+
+La \textit{GHD} est une extension de la distance de Hamming\footnote{Article Wikipedia sur la distance de Hamming: \url{http://fr.wikipedia.org/wiki/Distance_de_Hamming}} qui donne un crédit partiel pour les échecs mineurs \cite{bookstein2002generalized}.

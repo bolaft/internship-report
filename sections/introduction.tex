@@ -3,11 +3,24 @@
 
 \label{ch:introduction}
 
+Dans ce chapitre, nous présentons tout d'abord le contexte dans lequel ce travail a été effectué. Nous exposons ensuite la motivation et les objectifs du travail, avant d'en détailler les contributions.
+
 \section{Contexte}
 
+Ce travail a été effectué dans le cadre d'un stage obligatoire de cinq mois nécessaire à l'obtention du diplôme de Master en Informatique, spécialité ATAL\footnote{Apprentissage et Traitement Automatique de la Langue (\url{http://www.dpt-info.univ-nantes.fr/1326208903095/0/fiche___pagelibre/})}, à l'Université de Nantes. Le stage a été effectué au LINA\footnote{Laboratoire Informatique de Nantes Atlantique (\url{http://www.lina.univ-nantes.fr/})}, au sein de l'équipe TALN\footnote{Traitement Automatique du Langage Naturel (\url{http://www.lina.univ-nantes.fr/?-TALN-.html})}. Son encadrement a été assuré par Nicolas Hernandez et le tutorat par Christian Viard-Gaudin.
+
+Ce stage fait également office de préambule à une thèse potentielle dans le domaine de la communication médiée par les machines (CMC), qui s'inscrirait dans le cadre du projet ODISAE (\textit{Optimizing Digital Interaction with a Social and Automated Environment}) pour lequel le LINA a été sélectionné comme laboratoire partenaire, et auquel participent les entreprises suivantes : EPTICA (coordinateur), Jamespot, Kwaga, Cantoche, TokyWoky, Aproged et CDT10.
 
 \section{Motivation et objectifs}
 
+Le traitement automatique de conversations asynchrones en ligne (comme les fils de discussions de forums, ou les conversations par courriels) est d'une importance capitale pour les communautés qui cherchent à améliorer les systèmes de question-réponse, à analyser les opinions et les intentions des utilisateurs, à détecter les messages contenant des requêtes urgentes, à identifier les problèmes non-résolus, etc. En particulier, l'analyse des conversations portant des demandes d'information (e.g. dépannage et assistance) constitue un enjeu scientifique et industriel particulièrement important.
+
+C'est pour améliorer tous ces systèmes que nous cherchons à segmenter rhétoriquement (c'est à dire en fonction de l'\textit{intention discursive} du locuteur ; le moyen qu'il met en œuvre pour agir sur son environnement et ses interlocuteurs par ses mots) les messages de discussions en ligne, et plus particulièrement les courriels. Nous supposons qu'en segmentant un courriel en fragments structurellement autonomes et rhétoriquement homogènes, et donc potentiellement plus pertinents que la phrase ou le paragraphe, son analyse sera facilitée.
 
 \section{Contributions}
 
+Ce travail développe une technique permettant d'exploiter les efforts cognitifs effectués par des humains attelés à une tâche de mise en forme de messages de réponse pour entraîner un segmenteur discursif capable d'identifier des fragments de messages autonomes et homogènes.
+
+Nous proposons également un système de segmentation visant à soutenir l'analyse de messages en termes d'actes du langage, et rapportons l'évaluation de différents modèles construits à partir de plusieurs ensembles de traits.
+
+De plus, nous proposons à la communauté un nouveau corpus pour l'analyse de discussions asynchrones en ligne, qui a l'avantage d'être vaste, moderne, multimodal et multilingue.

@@ -11,3 +11,91 @@
 
 \section{Corpus de courriers électroniques}
 
+%Les travaux existants se fondent généralement sur une pré-annotation des messages en actes du dialogue (\textit{DA}). Les \textit{DA} décrivent les fonctions communicatives portées dans chaque message (e.g. question, réponse, remerciement...) Austin FIXME. Kim FIXME proposent une liste d'actes spécifiques à la description des messages au sein de forums.
+%Jusqu'à présent la majorité des travaux ont modélisé les discussions au niveau de leurs messages en les décrivant su
+
+In most works, conversation interactions between the participants are modeled in terms of dialogue acts (DA) \cite{austin:1970}. The DAs describe the communicative function conveyed by each text utterance  (e.g.~question, answer, greeting,\ldots).
+%
+In this paper, we address the problem of rhetorically segmenting the new content parts of messages in online asynchronous discussions. 
+The process aims at supporting the analysis of messages in terms of DA.
+We pay special attention to the processing of electronic mails.
+
+%La majorité des travaux modélisent les interactions entre intervenants en termes d'\textit{actes de dialogue} (DA) \cite{austin:1970}. Les DAs correspondent aux fonctions communicatives portées par chaque énoncé d'un texte (e.g. question, réponse, remerciement...). 
+% La théorie des actes du dialogue \cite{austin:1970} propose de décrire les énoncés en termes des fonctions communicatives portées par chacun d'eux (e.g. question, réponse, remerciement...). 
+%
+The main trend in automatic DA recognition consists in using supervised learning algorithms to predict the DA conveyed by a sentence or a message \cite{joty:2013:sigdial}.
+% L'approche dominante en reconnaissance automatique de DA consiste en l'usage d'algorithmes de classification supervisée \cite{joty:2013:sigdial} pour déterminer l'acte porté par une phrase ou un message. 
+%
+The hypothesized message segmentation results from the global analysis of these individual predictions over each sentence.
+%Le découpage des messages découle alors des résultats d'analyse.
+%
+A first remark on this paradigm is that it is not realistic to use in the context of multi-domain and multimodal processing because it requires the building of training data which is a very substantial and time-consuming task.
+%Une première critique de ce paradigme est que sa mise en oeuvre est laborieuse et coûteuse en temps d'annotation pour construire des données d'entraînement, ce qui n'est pas réaliste en contexte de traitement multi-domaine voire multi-modal.
+%
+A second remark is that the model does not have a fine-grained representation of the message structure or the relations between messages. Considering such characteristics could drastically improve the systems % for example
+%(e.g.~
+to allow to focus on specific text parts or to filter out less relevant ones. %). 
+% Une seconde critique est que dans ce contexte, la connaissance de la structure des messages permettrait aux applications susvisées de se focaliser sur des parties spécifiques et filtrer les passages moins pertinents. 
+Indeed, apart from the closing formula, a message may for example be made of several distinct information requests, the description of an unsuccessful procedure, the quote of third-party messages\ldots
+% En effet, outre des formules de politesse, un message peut compter par exemple plusieurs expressions de besoin, décrire une procédure infructueuse et citer des portions de messages tiers. 
+% faire référence à plusieurs contenus exprimés par différentes contributions tierces
+
+So far, few works address the problem of message segmentation.
+\cite{lampert:2009:emnlp} propose to segment emails in prototypical zones such as the author's contribution, quotes of original messages, the signature, the opening and closing formulas. 
+In comparison, we focus on the segmentation of the author's contribution (what we call the new content part).
+\cite{joty:2013:jair} identifies %topical segments of sentences which consist in 
+clusters of topically related sentences through the multiple messages of a thread, without distinguishing email and forum messages. Apart from the topical aspect, our problem differs because we are only interested in the cohesion between sentences in nearby fragments and % but
+ not on distant sentences.
+% . In our approach we are more interested by rhetorically motivated segments.
+%De par sa robustesse, cette dernière approche peut servir de base de comparaison.
+%Or, peu de travaux se sont penchés sur la tâche de segmentation des courriels en tant que telle. Les rares travaux ne concernent pas le découpage en DA. \cite{lampert:2009:emnlp} s'intéressent à découper les courriels en des zones prototypiques telles que la contribution de l'auteur, les reprises de messages tiers, la signature et les formules d'appel et de clôture... \cite{joty:2013:jair} identifient des segments thématiques. De par sa robustesse, cette dernière approche peut servir de base de comparaison.
+
+Three research areas are directly related to our study:
+a) collaborative approaches for acquiring
+annotated corpora, b) detection of email structure, and c) sentence alignment.
+%
+%We can set our approach in the trend of the collaborative approaches for acquiring annotated corpora such as the Game With A Purpose (GWAP) \cite{ahn:2006:computer} or the paid-for crowdsourcing \cite{fort:2011:cl}.
+In the \cite{wang:2013:lre}'s taxonomy of the collaborative approaches for acquiring annotated corpora, our approach could be related to the \textit{Wisdom of the Crowds} (WotC) genre where motivators are altruism or prestige to collaborate for the building of a public resource.
+As a major difference, we did not initiate the annotation process and consequently we did not define annotation guidelines, design tasks or develop tools for annotating which are always problematic questions.
+We have just rerouted \textit{a posteriori} the result of an existing task which was performed in a distinct context.
+In our case the burning issue is to determine the adequacy of our segmentation task.
+Our work is motivated by the need to identify important snippets of information in messages for applications such as being able to determine whether all the aspects of a customer request were fully considered.
+We argue that even if it is not always obvious to tag topically or rhetorically a segment, the fact that it was a human who actually segmented the message ensures its quality.
+%
+% is another major genre for crowdsourcing. WotC deployments allow members of the general public to collaborate to build a public resource, to predict event outcomes or to estimate difficulty to guess quantities. Wikipedia, the most well-known WotC instance, has different motivators that have changed over time. Initially, altruism and indirect benefit were factors: people contributed articles to Wikipedia not only to help others but also to build a resource that would ultimately help themselves. As Wikipedia matured, the prestige of being a regular contributor or editor became a motivator (Suh et al. 2009).
+%
+We think that our approach can also be used for determining the relevance of the segments, however it has some limits, and we do not know how labelling segments with dialogue acts may help us do so.
+
+Detecting the structure of a thread is a hot topic. 
+%
+As mentioned in Section~\ref{sec:intro}, very little works have been done on email segmentation. 
+We are aware of recent works in linear text segmentation such as \cite{kazantseva:2011} who addresses the problem by modelling the text as a graph of sentences and by performing clustering and/or cut methods. 
+%
+Due to the size of the messages (and consequently the available lexical material), it is not always possible to exploit this kind of method. However, our results tend to indicate that we should investigate in this direction nonetheless.
+%
+By detecting sub-units of information within the message, our work may complement the works of \cite{li:2011:threadlinking,kim:2010:taggingandlinking} who propose solutions for detecting links between messages. 
+% \texttt{in-reply-to} link
+We may extend these approaches by considering the possibility of pointing from/to multiple message sources/targets. % or determining more precisely the pointed area.
+
+Concerning the alignment process, our task can be compared to the detection of monolingual text derivation (otherwise called plagiarism, near–duplication, revision). \cite{poulard:2011:detecting} compare, for instance, the use of $n$–grams overlap with the use of text hapax. 
+In constrast, we already know that a text (the reply message) derives from another (the original message). Sentence alignment has also been a very active field of research 
+%both in monolingual (e.g. plagiarism detection) and multilingual  (e.g. 
+in statistical machine translation for building parallel corpora. %) domains. 
+%
+%In MT, 
+Some methods are based on sentence length comparison \cite{gale:1991}, some methods rely on the overlap of rare words (cognates and named entities) \cite{enright-kondrak:2007:ShortPapers}.
+%For detection of derivation links, \cite{poulard:2011:detecting} compare the use of n–grams overlap with the use of text specificities. % exploitation of the specificity and invariance of textual elements. 
+% between texts (otherwise called plagiarism, near–duplication, revision, etc.) at the document level. 
+%We evaluate the use of textual elements implementing the ideas of specificity and invariance as well as their combination to characterize derivatives. We built a French press corpus based on Wikinews 
+% revisions to run this evaluation. We obtain performances similar to the state of the art method 
+% (n–grams overlap) while reducing the signature size and so, the processing costs. In order ...
+In comparison, %to the speech recognition and translation use cases, 
+%our work is more an alignment task than a detection of derivation. In addition 
+in our task, despite some noise, the compared text includes large parts of material identical to the original text. 
+The kinds of edit operation in presence (no inversion\footnote{When computing the Levenshtein distance, the inversion edit operation is the most costly operation.} only deletion, insertion and substitution) lead us to consider the Levenshtein distance as a serious option.  
+
+% \url{http://www.statmt.org/survey/Topic/SentenceAlignment}
+% An influential early method is based on sentence length, measured in words (Brown et al., 1991; Gale and Church, 1991; Gale and Church, 1993) or characters
+% training models with parallel texts
+%Enright and Kondrak (2007) use a simple and fast method for document alignment that relies of overlap of rare but identically spelled words, which are mostly cognates, names, and numbers.
+

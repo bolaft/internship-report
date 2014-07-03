@@ -7,7 +7,9 @@ Dans ce chapitre, nous présentons notre approche pour la segmentation de courri
 
 \section{Étiquetage de séquences}
 
-Nous choisissons de traiter le problème de la segmentation comme une tache d'étiquetage de séquences dont l'objectif est d'attribuer globalement le meilleur ensemble d'étiquettes pour la séquence entière d'un seul coup\footnote{Un exemple classique de tâche accomplie de cette manière est l'étiquetage morpho-syntaxique, qui cherche à identifier la nature grammaticale de chaque terme d'une phrase ou d'un document.}. Dans cette perspective, chaque courriel est traité comme une séquence de phrases. L'idée sous-jacente est que l'étiquette la plus pertinente pour une phrase est dépendante des traits et de l'étiquette des phrases proches. 
+En traitement automatique du langage naturel, l'approche supervisée reste généralement la méthode la plus stable et la plus efficace pour résoudre les problèmes de classification. Notre but est donc d'entraîner un système à détecter les frontières des segments, c'est à dire de déterminer, via une approche de classification, et pour chaque phrase, si elle débute un nouveau segment ou non.
+
+Plus spécifiquement, nous choisissons de traiter le problème comme une tache d'étiquetage de séquences dont l'objectif est d'attribuer globalement le meilleur ensemble d'étiquettes pour la séquence entière d'un seul coup\footnote{Un exemple classique de tâche accomplie de cette manière est l'étiquetage morpho-syntaxique, qui cherche à identifier la nature grammaticale de chaque terme d'une phrase ou d'un document.}. Dans cette perspective, chaque courriel est traité comme une séquence de phrases. L'idée sous-jacente est que l'étiquette la plus pertinente pour une phrase est dépendante des traits et de l'étiquette des phrases proches. 
 
 Notre segmenteur est basé sur un classifieur utilisant les champs aléatoires de Markov, tel qu'implémenté dans le programme d'étiquetage de séquences \textit{Wapiti} \cite{lavergne2010practical}. Nous fixons la taille de la fenêtre à 5, c'est à dire que l'algorithme prend en compte non seulement les traits de la phrase qu'il cherche à étiqueter mais également ceux des deux phrases précédentes et des deux phrases suivantes.
 
@@ -63,7 +65,7 @@ Le seul trait que nous prenons en compte pour la reconnaissance des variations t
 
 \subsection{Traits divers}
 
-Cet ensemble inclut les traits stylistiques et sémantiques. Il contient 24 traits, plusieurs ayant été empruntés à des travaux dans le domaine de la classification d'actes de dialogue \cite{qadir2011classifying} et de la segmentation de courriels \cite{lampert2009segmenting}. 
+Cet ensemble inclut les traits stylistiques et sémantiques. Il contient 24 traits, plusieurs ayant été empruntés à des travaux dans le domaine de la classification d'actes de langage \cite{qadir2011classifying} et de la segmentation de courriels \cite{lampert2009segmenting}. 
 
 Les traits stylistiques capturent l'information portant sur la structure visuelle et la composition du message : 
 

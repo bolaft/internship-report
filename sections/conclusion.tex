@@ -3,14 +3,24 @@
 
 \label{ch:conclusions}
 
+Dans ce chapitre, nous commençons par rappeler les apports de notre travail, puis nous détaillons ses applications possibles, avant d'évoquer comment nous pouvons l'améliorer dans le futur. Enfin, nous mentionnons les publications qui en ont été tirées.
+
 \section{Réalisations}
 
+La contribution principale de ce travail est d'apporter une technique permettant d'exploiter les efforts cognitifs effectués par des humains attelés à une tâche de mise en forme de messages de réponse pour entraîner un segmenteur discursif.
 
-\section{Applications}
+Nous avons également développé un système de segmentation visant à soutenir l'analyse de messages en termes d'actes du langage et rapporté l'évaluation de différents modèles construits à partir d'ensemble de traits variés.
 
+Enfin, nous avons proposé un nouveau corpus pour l'analyse de discussions asynchrones en ligne, qui a l'avantage d'être vaste, moderne, multimodal et multilingue.
 
-\section{Futurs travaux}
+\section{Perspectives}
 
+Bien qu'il soit toujours possible de les améliorer, nos résultats indiquent que notre approche mérite un examen approfondi. Notre approche de segmentation reste relativement simple et peut facilement être étendue. Une manière de le faire serait de considérer les traits contextuels pour caractériser les phrases dans la structure originelle du message où elles ont été écrites.
+
+Comme travaux futurs, nous prévoyons également de reproduire nos expériences sur un jeu de données constituées par l'ensemble des phrases des courriels, et pas seulement les phrases reprises dans les messages qui leur font réponse. Ce faisant, nous espérons corriger un biais dû fait que notre segmenteur n'est jusqu'à présent entraîné et testé que sur les parties des courriels typiquement reprises lors d'une conversation.
+
+Enfin, il est possible de compléter nos expériences avec deux nouvelles approches pour l'évaluation. La première consistera à comparer la segmentation automatique avec celle effectuée par des annotateurs humains. Cette tâche reste difficile puisqu'il sera alors nécessaire de définir un protocole d'annotation, des lignes directrices et de construire de nouvelles ressources. La seconde évaluation que nous prévoyons d'effectuer est une évaluation extrinsèque. L'idée est de mesurer la contribution que peut apporter la segmentation d'un courriel au processus d'identification des actes du langage, c'est à dire de vérifier si la connaissance des frontières entre segments pourrait améliorer les systèmes de classification existants.
 
 \section{Publications}
 
+Un article basé sur ces travaux de recherche, titré \textit{Exploiting the human computational effort dedicated to message reply formatting for training discursive email segmenters}, a été soumis et accepté à \textit{The 8th Linguistic Annotation Workshop} (LAW 8), tenu en conjonction avec \textit{The 25th International Conference on Computational Linguistics} (COLING 2014).

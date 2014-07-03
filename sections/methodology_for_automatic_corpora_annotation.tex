@@ -7,72 +7,17 @@ Dans ce chapitre, nous présentons notre hypothèse ainsi que les étapes détai
 
 \section{Hypothèses}
 
-Nous partons du postulat que, lorsqu'un internaute reprend certains passages du courriel auquel il répond dans son message, il effectue des opérations cognitives pour identifier des fragments de texte autonomes et homogènes. Ces opérations peuvent être interpretées comme des opérations d'annotation. Les suppositions que l'on peut faire sur le type d'annotation dont il s'agit dépendent de l'opération qui a été effectuée. La suppression ou la reprise de texte original peut donner des indices sur la pertinence du contenu : du texte rejeté est probablement moins pertinent que du texte réutilisé.
+Premièrement, nous supposons qu'un message peut être divisé en segments du discours subséquents et consécutifs, chacun porteur de son propre acte du dialogue. On considère la phrase comme l'unité élémentaire dont sont constitués ces segments. 
+
+Deuxièmement, nous partons du postulat que, lorsqu'un internaute répond à un courriel et qu'il en reprend certains passages dans son message, il effectue des opérations cognitives pour identifier des fragments de texte autonomes : la partie citée consiste en une unité d'information homogène. Ces opérations peuvent être interprétées comme des opérations d'annotation. Les suppositions que l'on peut faire sur le type d'annotation dont il s'agit dépendent de l'opération qui a été effectuée. Ainsi, par exemple, la suppression ou la reprise de texte originel peut donner des indices sur la pertinence du contenu : du texte rejeté est probablement moins pertinent que du texte réutilisé.
 
 \section{Schéma d'annotations}
 
-Nous supposons que lorsqu'une personne ajoute du nouveau contenu entre deux blocs de texte cité, il effectue un découpage du message original. Nous supposons que la partie citée consiste en une unité d'information homogène. Par exemple, on peut supposer que la première phrase d'une partie citée comporte des instructions pour ouvrir un nouveau segment de discours tandis que la dernière phrase comporte des instructions pour achever le seegment. Par conséquent, nous pouvons effectuer certaines suppositions par rapport au role joué par ces phrases dans la structure informationnelle du message d'origine. On suppose qu'un message peut être divisé en segments du discours subsequents et consécutifs, chacun porteur de son propre acte du dialogue. On prend la phrase comme unité élémentaire. Une phrase dans un segment peut jouer l'un des roles suivants: \emph{starting and ending} (\textit{SE}), si elle constitue un segment à elle seule, \emph{starting} (\textit{S}), si elle débute un segment, \emph{inside} (\textit{I}), si elle n'est ni en début ni en fin de segment, et \emph{ending} (\textit{E}), si elle termine un segment.
+Comme nous l'avons vu, nous supposons que lorsqu'une personne ajoute du nouveau contenu entre deux blocs de texte cité, il effectue un découpage du message originel. Ainsi, on peut supposer que la première phrase d'une partie citée comporte des instructions pour ouvrir un nouveau segment de discours tandis que la dernière phrase comporte des instructions pour achever le segment. Par conséquent, nous pouvons effectuer certaines suppositions par rapport au rôle joué par ces phrases dans la structure informationnelle du message d'origine. Une phrase dans un segment peut jouer l'un des rôles suivants: \emph{starting and ending} (\textit{SE}), si elle constitue un segment à elle seule, \emph{starting} (\textit{S}), si elle débute un segment, \emph{inside} (\textit{I}), si elle n'est ni en début ni en fin de segment, et \emph{ending} (\textit{E}), si elle termine un segment.
 
 Ce schéma est similaire au schéma \emph{BIO} à la différence qu'il est appliqué au niveau de la phrase et non au niveau du token \cite{ratinov:2009:conll}.
 
 La figure~\ref{fig:exampleSegmentationLabels} illustre ce schéma en montrant comment les phrases de la figure~\ref{fig:exampleSourceReplyMessage} peuvent être alignées et comment les étiquettes peuvent en être inférées.
-
-\section{Procédure de génération des données annotées}
-
-Avant de pouvoir prédire les labels des phrases du message originel, il est nécessaire d'identifier celles qui ont été réutilisées dans un message de réponse. L'identification des lignes citées dans le message de réponse est insuffisant pour diverses raisons.
-
-Premièrement, le segmenteur est supposé fonctionner sur des données non-bruitées (i.e. les nouveaux contenus dans les messages) alors qu'un texte cité est une version altérée du texte original. En effet, certains clients de messagerie électronique ne respectent pas toujours les standards et ne sont pas focément toujours compatibles\footnote{Les \textit{Request for Comments} (RFC) sont des règles et protocoles proposés par les groupes de travail participant à l'\textit{Internet Standardization} (\url{https://tools.ietf.org/html}). Certains RFC sont consacrés aux formats des courriels et aux spécifications d'encodage (voir RFC 2822 et 5335 pour commencer). Il y a eu de nombreuses propositions, parfois mises à jours et donc parfois rendues caduques, ce qui peut expliquer certains problèmes de compatibilité)}. En particulier, l'absence de certaines métadonnées peut causer le mauvais ré-encodage des blocs de citation à chaque échange. De plus, les programmes clients peuvent intégrer leurs propres mécanismes pour citer les précédents messages, ou encore tronquer les lignes trop longues\footnote{Fonctionnalité utilisée pour rendre le texte lisible sans avoir à scroller horizontalement. Les phrases sont généralement découpées en segments d'environ 80 caractères.}.
-
-Deuxièmement, accéder aux messages originels peut permettre de prendre en compte certains traits contextuels (comme la disposition visuelle par exemple).
-
-Troisièmement, pour aller plus loin, le context original du texte extrait contient également de l'information sur la segmentation d'un message. Par exemple, une phrase du message originel, qui ne serait pas présente dans la réponse, mais qui suit une phrase alignée, peut être considérée comme débutant un nouveau segment.
-
-Don, en plus d'identifier les lignes citées, nous déployons une procédure d'alignement pour obtenir la version originale du texte cité. La procédure décrite étiquette les phrases de messages sources avec une information sur leur segmentation. Elle suit les étapes suivantes :
-
-\begin{enumerate}
-    \item Les messages postés dans le style interfolié sont identifiés
-    \item Pour chaque paire message source / réponse :
-    \begin{enumerate}
-        \item Les deux messages sont tokenisés au niveau de la phrase et du mot (voir sous-section~\ref{subsec:tokenization} pour le détail des techniques employées pour la tokenisation)
-        \item Les lignes de citations dans la réponse sont identifiées
-        \item Les phrases qui font partie du texte cité dans le message de réponse sont identifiées
-        \item Les phrases du message d'origine sont alignées avec le texte cité dans la réponse (voir sous-section~\ref{subsec:tokenization} pour le détail de la procédure d'alignement)
-        \item Les phrases alignées sont étiquetées (voir sous-section~\ref{subsec:labelling} pour le détail de l'algorithme d'étiquetage)
-        \item La séquence de phrases alignées est ajoutée au jeu de données
-    \end{enumerate}
-\end{enumerate}
-
-Les messages contenant des messages à contenu interfolié sont reconnus grâce à la présence d'au moins deux lignes citées consécutives séparées par des lignes de nouveau contenu. Les paires de messages sources et leur réponse sont constituées à partir des champs \emph{in-reply-to} de leurs entêtes. Comme déclaré dans le RFC 3676\footnote{\url{http://www.ietf.org/rfc/rfc3676.txt}}, nous considérons comme des lignes citées les lignes commençant par le symbole "\textgreater" (chevron). Les lignes qui ne sont pas des lignes citées sont considérées comme étant des nouvelles lignes. Les tokens sont utilisés pour indexer les lignes citées et les phrases.
-
-\subsection{Tokenization}
-
-\label{subsec:tokenization}
-
-\subsection{Alignement}
-
-\label{subsec:alignment}
-
-Pour trouver les alignements entre deux messages donnés, nous utilisons un algorithme d'alignement de chaînes basé sur la programmation dynamique (DP) \cite{sankoff:1983}. Dans le contexte de la reconnaissance de la parole, cet algorithme est aussi connu sous le nom de \textit{NIST align/scoring algorithm}. En effet il est largement utilisé pour évaluer les systèmes de reconnaissance de la parole en comparant leurs sorties au texte de référence. Il est utilisé en particulier pour calculer deux taux d'erreur : le \textit{Word Error Rate} (WER) et le \textit{Sentence Error rate} (SER).
-
-L'algorithme fonctionne en effectuant une réduction de la distance de Levenshtein en attribuant aux mots corrects, aux insertions, aux suppressions et aux substitutions des poids respectifs de 0, 75, 75 et 100. L'algorithme est de complexité $O(MN)$.
-
-L'Université de Carnegie Mellon fournit une implémentation de cet algorithme dans son kit de reconnaissance de la parole\footnote{Sphinx 4, $edu.cmu.sphinx.util.NISTAlign$, \url{http://cmusphinx.sourceforge.net}}
-
-\subsection{Étiquetage}
-
-\label{subsec:labelling}
-
-L'étiquetage d'une phrase alignée (phrase du message source réutilisée dans la réponse) se fait suivant un simple algorithme à base de règles :
-
-\begin{itemize}
-    \item[\bullet] Pour chaque phrase source alignée :
-    \begin{itemize}
-        \item[\bullet] si la phrase est entourée par du nouveau contenu dans la réponse, l'étiquette est \texttt{Start\&End}
-        \item[\bullet] sinon si la phrase est précédée par du nouveau contenu, l'étiquette est \texttt{Start}
-        \item[\bullet] sinon si la phrase est suivie par du nouveau contenu, l'étiquette est \texttt{End}
-        \item[\bullet] sinon, l'étiquette est \texttt{Inside}
-    \end{itemize}
-\end{itemize}
 
 \begin{figure}
     \begin{minipage}{\textwidth}
@@ -132,27 +77,104 @@ L'étiquetage d'une phrase alignée (phrase du message source réutilisée dans 
 \end{figure}
 
 \begin{figure}
-    \begin{minipage}{\textwidth}
-        \small\centering
-        \begin{tabular}{*{2}{|l}|c|}
-        \hline
-        \textbf{Source} & \textbf{Réponse} & \textbf{Étiquette}\\
-            \hline
-            S1  & & \\
-            & R1 & \\
-            \textit{S2}  & \textgreater \textit{R2}& \texttt{Start}\\
-            \textit{S3}  & \textgreater \textit{R3}& \texttt{Inside}\\
-            \textit{S4}  & \textgreater \textit{R4}& \texttt{End}\\
-            & R5 & \\
-            \textit{S5}  & \textgreater \textit{R6} & \texttt{Start\&End}\\
-            & R7 & \\
-            & [...] & \\
-            S6 &  & \\ \ 
-            [...] &  & \\
-            \hline
-        \end{tabular}
-    \end{minipage}
+    \small\centering
+    \begin{tabular}{|*{2}{c}c|}
+    \toprule
+    \textbf{Source} & \textbf{Réponse} & \textbf{Étiquette} \\
+        \midrule
+        S1  & & \\
+        & R1 & \\
+        \textit{S2}  & \textgreater \textit{R2}& \texttt{Start} \\
+        \textit{S3}  & \textgreater \textit{R3}& \texttt{Inside} \\
+        \textit{S4}  & \textgreater \textit{R4}& \texttt{End} \\
+        & R5 & \\
+        \textit{S5}  & \textgreater \textit{R6} & \texttt{Start\&End} \\
+        S6 &  & \\ 
+        S7 &  & \\
+        S8 &  & \\
+        & R7 & \\
+        & R8 & \\
+        \bottomrule
+    \end{tabular}
 
-    \caption{Alignement des phrases tirées des messages montrés dans la figure~\ref{fig:exampleSourceReplyMessage}, ainsi que les étiquettes inferrées de la reprise de texte du message source. Les étiquettes sont associées au phrases d'origine.}
+    \caption{Alignement des phrases tirées des messages montrés dans la figure~\ref{fig:exampleSourceReplyMessage}, ainsi que les étiquettes inférées de la reprise de texte du message source. Les étiquettes sont associées aux phrases d'origine.}
     \label{fig:exampleSegmentationLabels}
 \end{figure}
+
+\section{Procédure de génération des données annotées}
+
+Avant de pouvoir prédire les labels des phrases du message originel, il est nécessaire d'identifier celles qui ont été réutilisées dans un message de réponse. La seule identification des lignes citées dans le message de réponse est insuffisante pour diverses raisons.
+
+Premièrement, le segmenteur est supposé fonctionner sur des données non-bruitées (i.e. les nouveaux contenus dans les messages) alors qu'un texte cité est une version altérée du texte originel. En effet, certains clients de messagerie électronique ne respectent pas toujours les standards et ne sont pas forcément toujours compatibles entre eux\footnote{Les \textit{Request for Comments} (RFC) sont des règles et protocoles proposés par les groupes de travail participant à l'\textit{Internet Standardization} (\url{https://tools.ietf.org/html}). Certains RFC sont consacrés aux formats des courriels et aux spécifications d'encodage (voir RFC 2822 et 5335 pour commencer). Il y a eu de nombreuses propositions, parfois mises à jour et donc parfois rendues caduques, ce qui peut expliquer certains problèmes de compatibilité.}. En particulier, l'absence de certaines métadonnées peut causer un ré-encodage erroné des blocs de citation à chaque échange. De plus, les programmes clients peuvent intégrer leurs propres mécanismes pour citer les précédents messages, ou encore tronquer les lignes trop longues\footnote{Fonctionnalité utilisée pour rendre le texte lisible sans avoir à invoquer la barre de défilement horizontale. Les phrases sont généralement découpées en segments d'environ 80 caractères.}.
+
+Deuxièmement, accéder aux messages originels peut permettre de prendre en compte certains traits contextuels (comme la disposition visuelle par exemple).
+
+Troisièmement, pour aller plus loin, le contexte originel du texte extrait contient également de l'information sur la segmentation d'un message. Par exemple, une phrase du message originel, qui ne serait pas présente dans la réponse, mais qui suit une phrase alignée, peut être considérée comme débutant un nouveau segment.
+
+Pour ces trois raisons, en plus d'identifier les lignes citées, nous déployons une procédure d'alignement pour obtenir leurs versions d'origine. Elle suit les étapes suivantes :
+
+\begin{enumerate}
+    \item Les messages postés dans le style interfolié sont identifiés
+    \item Pour chaque paire message source / réponse :
+    \begin{enumerate}
+        \item Les deux messages sont tokenisés au niveau de la phrase et du mot (voir sous-section~\ref{subsec:tokenization} pour le détail des techniques employées pour la tokenisation)
+        \item Les lignes citées présentes dans la réponse sont identifiées
+        \item Les phrases qui font partie du texte cité dans le message de réponse sont identifiées
+        \item Les phrases du message d'origine sont alignées avec le texte cité dans la réponse (voir sous-section~\ref{subsec:tokenization} pour le détail de la procédure d'alignement)
+        \item Les phrases alignées sont étiquetées (voir sous-section~\ref{subsec:labelling} pour le détail de l'algorithme d'étiquetage)
+        \item La séquence de phrases alignées est ajoutée au jeu de données
+    \end{enumerate}
+\end{enumerate}
+
+Les messages contenant des messages à contenu interfolié sont reconnus grâce à la présence d'au moins deux lignes citées consécutives séparées par des lignes de nouveau contenu. Les paires de messages sources et leurs réponses sont constituées à partir des champs \emph{in-reply-to} de leurs entêtes. Comme déclaré dans le RFC 3676\footnote{\url{http://www.ietf.org/rfc/rfc3676.txt}}, nous considérons comme des lignes citées les lignes commençant par le symbole "\textgreater" (chevron). Les lignes qui ne sont pas des lignes citées sont considérées comme étant des nouvelles lignes. 
+
+% Les tokens sont utilisés pour indexer les lignes citées et les phrases.
+
+\subsection{Tokenisation}
+
+\label{subsec:tokenization}
+
+L'approche employée pour la tokenisation des messages suit globalement la stratégie du système de tokenisation en mots qui vient avec le \textit{TreeTagger} \cite{schmid:94b}, c'est à dire qu'il se concentre sur les marques de segmentation et l'analyse récursive des marques de ponctuation qui "collent" les débuts et fins de mots et phrases.
+
+\begin{enumerate}
+    \item[] Pour chaque courriel :
+    \begin{enumerate}
+        \item Reconnaissance des marques de segmentation
+        \item Correction des segmentations abusives
+        \item Pour chaque phrase obtenue :
+        \begin{enumerate}
+            \item Reconnaissance des marques de segmentation
+            \item Correction des segmentations abusives
+        \end{enumerate}
+    \end{enumerate}
+\end{enumerate}
+
+Pour chaque sous temps (reconnaissance et correction), les règles utilisées sont ordonnées des plus sûres au moins sûres.
+
+\subsection{Alignement}
+
+\label{subsec:alignment}
+
+Pour trouver les alignements entre deux messages donnés, nous utilisons un algorithme d'alignement de chaînes basé sur la programmation dynamique (DP) \cite{sankoff:1983}. 
+
+Dans le contexte de la reconnaissance de la parole, cet algorithme est aussi connu sous le nom de \textit{NIST align/scoring algorithm}. En effet il est largement utilisé pour évaluer les systèmes de reconnaissance de la parole en comparant leurs sorties au texte de référence. Il est utilisé en particulier pour calculer deux taux d'erreur : le \textit{Word Error Rate} (WER) et le \textit{Sentence Error rate} (SER).
+
+L'algorithme fonctionne en cherchant à minimiser globalement la distance de Levenshtein\footnote{Article Wikipédia sur la distance de Levenshtein: \url{http://fr.wikipedia.org/wiki/Distance_de_Levenshtein}} \cite{levenshtein1966binary} en attribuant aux mots corrects, aux insertions, aux suppressions et aux substitutions des poids de respectivement 0, 3, 3 et 4. L'algorithme est de complexité $O(MN)$.
+
+L'Université de Carnegie Mellon fournit une implémentation de cet algorithme dans son kit de reconnaissance de la parole\footnote{Sphinx 4, $edu.cmu.sphinx.util.NISTAlign$, \url{http://cmusphinx.sourceforge.net}}
+
+\subsection{Étiquetage}
+
+\label{subsec:labelling}
+
+L'étiquetage d'une phrase alignée (phrase du message source réutilisée dans la réponse) se fait suivant un simple algorithme à base de règles :
+
+\begin{itemize}
+    \item[] Pour chaque phrase source alignée :
+    \begin{itemize}
+        \item[(a)] si la phrase est entourée par du nouveau contenu dans la réponse, l'étiquette est \texttt{Start\&End}
+        \item[(b)] sinon si la phrase est précédée par du nouveau contenu, l'étiquette est \texttt{Start}
+        \item[(c)] sinon si la phrase est suivie par du nouveau contenu, l'étiquette est \texttt{End}
+        \item[(d)] sinon, l'étiquette est \texttt{Inside}
+    \end{itemize}
+\end{itemize}

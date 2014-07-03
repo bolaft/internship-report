@@ -5,7 +5,6 @@
 *.aux
 *.fdb_latexmk
 *.log
-*.pdf
 *.glo
 *.ist
 *.lof

@@ -7,7 +7,68 @@
 
 La théorie des actes du langage \cite{austin1975things} propose de décrire les énonciations en termes des fonctions communicatives portées par chacun d'eux (e.g. question, réponse, remerciement...). Ainsi, dans la plupart des travaux, c'est en termes d'actes du langage\footnote{Aussi connu dans certains travaux sous le nom d'actes du dialogue (\textit{dialog act}), ou d'actes du discours (\textit{speech act}).} que les interactions entre participants d'une conversation sont modélisées. Austin considère les énonciations comme des actions effectuées par le locuteur ; on trouve ici l'idée selon laquelle tout acte d'énonciation serait la réalisation d'un acte social. Les verbes qui spécifient ces actions sont appelés \textit{verbes performatifs}, comme quand on dit "Je vous confère le titre de capitaine". Mais les actes du langage ne sont pas constitués uniquement de ces types de verbes. \cite{searle1976taxonomy} propose cinq classes d'actes du dialogue : les assertifs (assertion, affirmation, etc.), les directifs (ordre, demande, conseil, etc.), les promissifs (promesse, offre, invitation, etc.), les expressifs (félicitation, remerciement, etc.) et les déclaratifs (déclaration de guerre, nomination, baptême, etc.).
 
-Les travaux existant concernant les actes du langage s'intéressent dans leur large majorité à les classifier selon telle ou telle taxonomie, dont il existe un très grand nombre \cite{traum200020}. L'approche dominante pour ce faire consiste en l'usage d'algorithmes de classification supervisée \cite{joty:2013:sigdial} pour déterminer l'acte porté par une phrase ou un message.
+Les travaux existant concernant les actes du langage s'intéressent dans leur large majorité à classifier les énoncés selon telle ou telle taxonomie, dont il existe un très grand nombre \cite{traum200020}. Le tableau \ref{fig:fundamentalTaxonomies} détaille deux taxonomies fondatrices : celle de Austin et celle de Searle. Le tableau \ref{fig:emailTaxonomies} présente quelques taxonomies récemment employées dans le cadre de l'analyse de courriels. L'usage d'algorithmes de classification supervisée \cite{joty:2013:sigdial} représente l'approche dominante pour déterminer l'acte porté par une phrase ou un message.
+
+\begin{table}
+	\begin{tabularx}{\textwidth}{c c Y}
+		\toprule
+		Acte & Description ou exemples & Référence \\
+		\midrule
+		Verdictif & acquitter, condamner, décréter... & \\
+		Exercitif & dégrader, commander, ordonner, pardonner, léguer... & \\
+		Promissif & promettre, faire vœu de, garantir, parier, jurer de... & \cite{austin1975things} \\
+		Comportatif & s’excuser, remercier, déplorer, critiquer... & \\
+		Expositif & affirmer, nier, postuler, remarquer... & \\
+		\midrule
+		Assertif & affirmation d'un état de fait & \\
+		Directif & tentative de pousser un interlocuteur à faire quelque chose & \\
+		Promissif & engagement de la part du locuteur & \cite{searle1976taxonomy} \\
+		Expressif & expression d'un état psychologique & \\
+		Déclaratif & déclaration ayant un impact direct & \\
+		\bottomrule
+	\end{tabularx}
+	\caption{Taxonomies fondatrices pour la catégorisation des actes du langage.}
+	\label{fig:fundamentalTaxonomies}
+\end{table}
+
+\begin{table}
+	\begin{tabularx}{\textwidth}{Y c c}
+		\toprule
+		Acte & Corpus ou type de corpus & Référence \\
+		\midrule
+		Acceptation &  & \\
+		Reconnaissance/appréciation &  & \\
+		Motivateur d'action &  & \\
+		Mécanisme de politesse &  & \\
+		Question rhétorique &  & \\
+		Question ouverte & BC3 & \cite{JanAAAI08} \\
+		Question à choix multiple &  & \\
+		Question en "wh*" &  & \\
+		Question binaire &  & \\
+		Rejet de réponse &  & \\
+		Affirmation &  & \\
+		Réponse incertaine &  & \\
+		\midrule					
+		Question-requête &  & \\
+		Question ouverte &  & \\
+		Engagement à la 1ère personne & messagerie d'entreprise & \cite{de2013classification} \\
+		Expression à la 1ère personne &  & \\
+		Autres énoncés à la 1ère personne &  & \\
+		Autres &  & \\
+		\midrule
+		Divulgation &  & \\
+		Édification &  & \\
+		Conseil &  & \\
+		Confirmation & multi-domaines & \cite{Lampert_classifyingspeech} \\
+		Question &  & \\
+		Reconnaissance &  & \\
+		Interprétation &  & \\
+		Réflexion &  & \\
+		\bottomrule
+	\end{tabularx}
+	\caption{Exemples de taxonomies des actes du langage spécifiques à l'analyse de courriels.}
+	\label{fig:emailTaxonomies}
+\end{table}
 
 \section{Segmentation de messages}
 
@@ -25,7 +86,7 @@ La plupart des travaux portant sur les actes du langage et les messages évitent
 
 Le W3C\footnote{\url{http://research.microsoft.com/enus/um/people/nickcr/w3csummary.html}} est le résultat de la récupération de 50 000 fils de conversation tirés du \textit{World Wide Web Consortium}. Les messages extraits de la liste de diffusion de w3c.org est constituée d'environ 200 000 documents. Il est utilisé par \cite{joty:2011:ijcai} pour la modélisation non supervisée d'actes du dialogue dans les courriels. \cite{joty:2013:sigdial} l'utilise en tant que jeu de données non annotées pour une tâche de classification semi-supervisée des actes du langage.
 
-Le BC3 est utilisé par \cite{joty:2013:sigdial} comme jeu de données annotées pour une tâche de classification semi-supervisée des actes du langage. Il contient 40 fils de discussion tirés du corpus W3C. Chaque fil a été annoté par trois annotateurs différents. Les métadonnées produites comportent notamment des résumés (par extraction) et des actes de discours (\textit{Propose}, \textit{Request}, \textit{Commit}, \textit{Meeting}).
+Le BC3 est utilisé par \cite{joty:2013:sigdial} comme jeu de données annotées pour une tâche de classification semi-supervisée des actes du langage. Il contient 40 fils de discussion tirés du corpus W3C. Chaque fil a été annoté par trois annotateurs différents. Les métadonnées produites comportent notamment des résumés (par extraction) et des actes de discours (\textit{Propose}, \textit{Request}, \textit{Commit}, \textit{Meeting}) \cite{JanAAAI08}.
 
 \section{Exploitation d'efforts humains}
 

@@ -3,11 +3,13 @@
 
 \label{ch:background_and_related_work}
 
+Dans ce chapitre, nous décrivons certains travaux existants que l'on peut rapprocher au notre et introduisons certains concepts utiles à notre approche. Tout d'abord, nous abordons le concept d'acte du langage. Cette notion nous sera utile puisque comme le verrons plus tard, une propriété majeure des segments que nous cherchons à isoler est d'être porteur de son propre acte du langage. Ensuite, nous nous intéresserons aux travaux portant sur la segmentation de texte, avant de considérer différents corpus que nous pourrions utiliser dans le cadre de nos expériences. Enfin, nous listons différentes approches collaboratives existantes pour l'obtention de corpus annotés, et indiquons en quoi elles diffèrent de la notre.
+
 \section{Actes du langage}
 
 La théorie des actes du langage \cite{austin1975things} propose de décrire les énonciations en termes des fonctions communicatives portées par chacun d'eux (e.g. question, réponse, remerciement...). Ainsi, dans la plupart des travaux, c'est en termes d'actes du langage\footnote{Aussi connu dans certains travaux sous le nom d'actes du dialogue (\textit{dialog act}), ou d'actes du discours (\textit{speech act}).} que les interactions entre participants d'une conversation sont modélisées. Austin considère les énonciations comme des actions effectuées par le locuteur ; on trouve ici l'idée selon laquelle tout acte d'énonciation serait la réalisation d'un acte social. Les verbes qui spécifient ces actions sont appelés \textit{verbes performatifs}, comme quand on dit "Je vous confère le titre de capitaine". Mais les actes du langage ne sont pas constitués uniquement de ces types de verbes. \cite{searle1976taxonomy} propose cinq classes d'actes du dialogue : les assertifs (assertion, affirmation, etc.), les directifs (ordre, demande, conseil, etc.), les promissifs (promesse, offre, invitation, etc.), les expressifs (félicitation, remerciement, etc.) et les déclaratifs (déclaration de guerre, nomination, baptême, etc.).
 
-Les travaux existant concernant les actes du langage s'intéressent dans leur large majorité à classifier les énoncés selon telle ou telle taxonomie, dont il existe un très grand nombre \cite{traum200020}. Le tableau \ref{fig:fundamentalTaxonomies} détaille deux taxonomies fondatrices : celle de Austin et celle de Searle. Le tableau \ref{fig:emailTaxonomies} présente quelques taxonomies récemment employées dans le cadre de l'analyse de courriels. L'usage d'algorithmes de classification supervisée \cite{joty:2013:sigdial} représente l'approche dominante pour déterminer l'acte porté par une phrase ou un message.
+Les travaux existants concernant les actes du langage s'intéressent dans leur large majorité à classifier les énoncés selon telle ou telle taxonomie, dont il existe un très grand nombre \cite{traum200020}. Le tableau \ref{fig:fundamentalTaxonomies} détaille deux taxonomies fondatrices : celle de Austin et celle de Searle. Le tableau \ref{fig:emailTaxonomies} présente quelques taxonomies récemment employées dans le cadre de l'analyse de courriels. L'usage d'algorithmes de classification supervisée \cite{joty:2013:sigdial} représente l'approche dominante pour déterminer l'acte porté par une phrase ou un message.
 
 \begin{table}
 	\begin{tabularx}{\textwidth}{c c Y}
@@ -36,6 +38,22 @@ Les travaux existant concernant les actes du langage s'intéressent dans leur la
 		\toprule
 		Acte & Corpus ou type de corpus & Référence \\
 		\midrule
+		Divulgation &  & \\
+		Édification &  & \\
+		Conseil &  & \\
+		Confirmation & multi-domaines & \cite{Lampert_classifyingspeech} \\
+		Question &  & \\
+		Reconnaissance &  & \\
+		Interprétation &  & \\
+		Réflexion &  & \\
+		\midrule					
+		Question-requête &  & \\
+		Question ouverte &  & \\
+		Engagement à la 1ère personne & messagerie d'entreprise & \cite{de2013classification} \\
+		Expression à la 1ère personne &  & \\
+		Autres énoncés à la 1ère personne &  & \\
+		Autres &  & \\
+		\midrule
 		Acceptation &  & \\
 		Reconnaissance/appréciation &  & \\
 		Motivateur d'action &  & \\
@@ -48,22 +66,6 @@ Les travaux existant concernant les actes du langage s'intéressent dans leur la
 		Rejet de réponse &  & \\
 		Affirmation &  & \\
 		Réponse incertaine &  & \\
-		\midrule					
-		Question-requête &  & \\
-		Question ouverte &  & \\
-		Engagement à la 1ère personne & messagerie d'entreprise & \cite{de2013classification} \\
-		Expression à la 1ère personne &  & \\
-		Autres énoncés à la 1ère personne &  & \\
-		Autres &  & \\
-		\midrule
-		Divulgation &  & \\
-		Édification &  & \\
-		Conseil &  & \\
-		Confirmation & multi-domaines & \cite{Lampert_classifyingspeech} \\
-		Question &  & \\
-		Reconnaissance &  & \\
-		Interprétation &  & \\
-		Réflexion &  & \\
 		\bottomrule
 	\end{tabularx}
 	\caption{Exemples de taxonomies des actes du langage spécifiques à l'analyse de courriels.}
@@ -72,11 +74,11 @@ Les travaux existant concernant les actes du langage s'intéressent dans leur la
 
 \section{Segmentation de messages}
 
-Jusqu'à présent, assez peu de travaux adressent le problème de la segmentation de courrier électronique. \cite{lampert:2009:emnlp} propose de segmenter les courriels en zones prototypiques telles que la contribution de l'auteur, les citations de messages originaux, la signature, ou encore la formule d'ouverture ou de fermeture. Notre travail contraste en ce que nous nous concentrons sur la segmentation de la contribution de l'auteur (ce que nous appelons le "nouveau contenu").
+Jusqu'à présent, assez peu de travaux adressent le problème de la segmentation de courrier électronique. \cite{lampert:2009:emnlp} propose de segmenter les courriels en zones prototypiques telles que la contribution de l'auteur, les citations de messages originaux, la signature, ou encore la formule d'ouverture ou de fermeture. Pour ce faire, il utilise un système basé sur les SVM (machines à vecteurs de support, ou \textit{Support Vector Machines}\footnote{\url{fr.wikipedia.org/wiki/Machine_à_vecteurs_de_support}}) et atteint un précision de 87\% pour une segmentation en neuf zones. Notre travail contraste en ce que nous nous concentrons sur la segmentation de la contribution de l'auteur (ce que nous appelons le "nouveau contenu").
 
 \cite{joty:2013:jair} identifie des groupes de phrases thématiquement proches au travers de multiple messages d'un fil de discussion, sans distinguer courriels et messages de forums. Notre problème diffère, d'une part parce que nous cherchons en premier lieu à effectuer une segmentation rhétorique et non thématique, et en second lieu en ce que nous ne nous intéressons qu'à la cohésion entre phrases consécutives, et non entre phrases distantes.
 
-En ce qui concerne la segmentation de textes d'une manière générale, la plupart des travaux portant sur le sujet ne considèrent que l'aspect thématique des segments. Dans le domaine, il est important de mentionner notamment l'algorithme \textit{TextTiling}, basé sur la notion de rupture thématique \cite{hearst1997texttiling}. Bien que \textit{TextTiling} soit capable de fonctionner correctement à l'échelle d'un courriel, il ne répond pas directement à notre problème puisque, comme nous l'avons dit, nous cherchons à effectuer une segmentation rhétorique et non thématique.
+En ce qui concerne la segmentation de textes d'une manière générale, la plupart des travaux portant sur le sujet ne considèrent que l'aspect thématique des segments. Dans le domaine, il est important de mentionner notamment l'algorithme \textit{TextTiling}, basé sur la notion de rupture lexicale \cite{hearst1997texttiling}. Il s'agit de l'un des algorithmes les plus communément utilisés pour la segmentation automatique de texte. Si l'algorithme détecte une rupture dans la cohésion lexicale du texte (entre deux blocs consécutifs), il place une frontière pour indiquer un changement thématique. Bien que \textit{TextTiling} soit capable de fonctionner correctement à l'échelle d'un courriel, il ne répond pas directement à notre problème puisque, comme nous l'avons dit, nous cherchons à effectuer une segmentation rhétorique et non thématique.
 
 Nous sommes au courant des travaux récents portant sur la segmentation de texte linéaire, tels que \cite{kazantseva:2011}, qui tente de résoudre le problème en modélisant le texte sous la forme d'un graphe de phrases et y appliquant des méthodes de regroupement ou de découpage. Cependant, en raison de la petite taille des messages (et par conséquent du modeste volume de matériau lexical que nous avons à disposition), il ne nous est généralement pas possible d'exploiter ce genre de méthode.
 
@@ -84,10 +86,16 @@ Nous sommes au courant des travaux récents portant sur la segmentation de texte
 
 La plupart des travaux portant sur les actes du langage et les messages évitent d'annoter eux-mêmes leurs corpus et préfèrent faire appel à des corpus distribués dans la communauté scientifique. Cependant, et notamment en raison de problématiques dues au respect de la vie privée, peu de conversations sont disponibles publiquement.
 
-Le W3C\footnote{\url{http://research.microsoft.com/enus/um/people/nickcr/w3csummary.html}} est le résultat de la récupération de 50 000 fils de conversation tirés du \textit{World Wide Web Consortium}. Les messages extraits de la liste de diffusion de w3c.org est constituée d'environ 200 000 documents. Il est utilisé par \cite{joty:2011:ijcai} pour la modélisation non supervisée d'actes du dialogue dans les courriels. \cite{joty:2013:sigdial} l'utilise en tant que jeu de données non annotées pour une tâche de classification semi-supervisée des actes du langage.
+Le corpus Enron\footnote{\url{http://www.cs.cmu.edu/~./enron/}} contient plus de 600 000 courriels envoyés par 158 employés de la compagnie Enron \cite{klimt2004introducing}. En 2010, EDRM a publié une version étendue de ce corpus, contenant plus de 1,7 millions de messages\footnote{EDMR Enron Email Data Set v2 Now Available: \url{http://www.edrm.net/archives/6462}}.
 
-Le BC3 est utilisé par \cite{joty:2013:sigdial} comme jeu de données annotées pour une tâche de classification semi-supervisée des actes du langage. Il contient 40 fils de discussion tirés du corpus W3C. Chaque fil a été annoté par trois annotateurs différents. Les métadonnées produites comportent notamment des résumés (par extraction) et des actes de discours (\textit{Propose}, \textit{Request}, \textit{Commit}, \textit{Meeting}) \cite{JanAAAI08}.
+Le W3C\footnote{\url{http://research.microsoft.com/enus/um/people/nickcr/w3csummary.html}} est le résultat de la récupération de 50 000 fils de conversation tirés du \textit{World Wide Web Consortium}. Le corpus est constitué de courrier de type "entreprise". Les messages extraits de la liste de diffusion de w3c.org est constituée d'environ 200 000 documents. Il est utilisé par \cite{joty:2011:ijcai} pour la modélisation non supervisée d'actes du dialogue dans les courriels. \cite{joty:2013:sigdial} l'utilise en tant que jeu de données non annotées pour une tâche de classification semi-supervisée des actes du langage.
+
+Le \textit{British Columbia Conversation Corpus} (BC3) est utilisé par \cite{joty:2013:sigdial} comme jeu de données annotées pour une tâche de classification semi-supervisée des actes du langage. Il contient 40 fils de discussion tirés du corpus W3C. Chaque fil a été annoté par trois annotateurs différents. Les métadonnées produites comportent notamment des résumés (par extraction) et des actes de discours (\textit{Propose}, \textit{Request}, \textit{Commit} et \textit{Meeting}) \cite{JanAAAI08}.
+
+Bien que ce dernier corpus présente certains avantages évidents, ils sont tous constitués de courriels d'entreprise et aucun n'est directement pertinent dans le contexte de l'amélioration de systèmes d'assistance aux utilisateurs. Nous obtiendrons donc nos données autrement, comme nous le montrerons plus tard.
 
 \section{Exploitation d'efforts humains}
 
-Nous pouvons assimiler notre approche au genre des approches collaboratives pour obtenir des corpus annotés, tels que le \textit{Game With A Purpose} (GWAP) \cite{ahn:2006:computer} ou le \textit{crowdsourcing} payé \cite{fort:2011:cl}. Dans la taxonomie développée par \cite{wang:2013:lre} pour catégoriser ce type d'approches, la notre pourrait aussi être assimilée au genre \textit{Wisdom of the Crowds} (WotC) où les motivations sont l'altruisme ou le prestige pour collaborer à la construction d'une ressource publique, prédire l'issue de certains événements, etc..  Une différence majeure avec ces approches est que nous n'avons pas initié le processus d'étiquetage et par conséquent nous n'avons pas défini de directives d'annotation, ce qui est toujours une tâche problématique : nous nous sommes contenté de détourner \textit{a posteriori} le résultat d'une tâche existante effectuée dans un contexte distinct.
+Nous pouvons assimiler notre approche au genre des approches collaboratives pour obtenir des corpus annotés, tels que le \textit{Game With A Purpose} (GWAP) \cite{ahn:2006:computer} - technique qui consiste à faire faire par des humains, au travers une interface ludique, les étapes d'un processus trop complexes pour être effectuées par une machine - ou le \textit{crowdsourcing} payé \cite{fort:2011:cl} (comme la plate-forme Mechanical Turk de Amazon par exemple). Dans la taxonomie développée par \cite{wang:2013:lre} pour catégoriser ce type d'approches, la notre pourrait être assimilée au genre \textit{Wisdom of the Crowds} (WotC) où les motivations sont l'altruisme ou le prestige pour collaborer à la construction d'une ressource publique, prédire l'issue de certains événements, etc.
+
+Une différence majeure entre notre travail et ces approches est que nous n'avons pas initié le processus d'étiquetage et par conséquent nous n'avons pas défini de directives d'annotation, ce qui est toujours une tâche problématique : nous nous sommes contenté de détourner \textit{a posteriori} le résultat d'une tâche existante effectuée dans un contexte distinct. Ici, la motivation ne serait pas le prestige, mais la volonté de se plier à une étiquette ainsi que le désir d'envoyer un message clairement formaté.

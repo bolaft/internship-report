@@ -108,7 +108,7 @@ La figure~\ref{fig:exampleSegmentationLabels} illustre ce schéma en montrant co
 
 \section{Procédure de génération des données annotées}
 
-Avant de pouvoir prédire les labels des phrases du message originel, il est nécessaire d'identifier celles qui ont été réutilisées dans un message de réponse. La seule identification des lignes citées dans le message de réponse est insuffisante pour diverses raisons. Premièrement, le segmenteur est supposé fonctionner sur des données non-bruitées (i.e. les nouveaux contenus dans les messages) alors qu'un texte cité est une version altérée du texte originel. En effet, certains clients de messagerie électronique ne respectent pas toujours les standards et ne sont pas forcément toujours compatibles entre eux\footnote{Les \textit{Request for Comments} (RFC) sont des règles et protocoles proposés par les groupes de travail participant à l'\textit{Internet Standardization} (\url{https://tools.ietf.org/html}). Certains RFC sont consacrés aux formats des courriels et aux spécifications d'encodage (voir RFC 2822 et 5335 pour commencer). Il y a eu de nombreuses propositions, parfois mises à jour et donc parfois rendues caduques, ce qui peut expliquer certains problèmes de compatibilité.}. En particulier, l'absence de certaines métadonnées peut causer un ré-encodage erroné des blocs de citation à chaque échange. De plus, les programmes clients peuvent intégrer leurs propres mécanismes pour citer les précédents messages, ou encore tronquer les lignes trop longues\footnote{Fonctionnalité utilisée pour rendre le texte lisible sans avoir à invoquer la barre de défilement horizontale. Les phrases sont généralement découpées en segments d'environ 80 caractères.}. Deuxièmement, accéder aux messages originels peut permettre de prendre en compte certains traits contextuels (comme la disposition visuelle par exemple). Troisièmement, pour aller plus loin, le contexte originel du texte extrait contient également de l'information sur la segmentation d'un message. Par exemple, une phrase du message originel, qui ne serait pas présente dans la réponse, mais qui suit une phrase alignée, peut être considérée comme débutant un nouveau segment. Pour ces trois raisons, en plus d'identifier les lignes citées, nous devons suivre une procédure d'alignement pour obtenir leurs versions d'origine. 
+Avant de pouvoir prédire les étiquettes des phrases du message originel, il est nécessaire d'identifier celles qui ont été réutilisées dans un message de réponse. La seule identification des lignes citées dans le message de réponse est insuffisante pour diverses raisons. Premièrement, le segmenteur est supposé fonctionner sur des données non-bruitées (i.e. les nouveaux contenus dans les messages) alors qu'un texte cité est une version altérée du texte originel. En effet, certains clients de messagerie électronique ne respectent pas toujours les standards et ne sont pas forcément toujours compatibles entre eux\footnote{Les \textit{Request for Comments} (RFC) sont des règles et protocoles proposés par les groupes de travail participant à l'\textit{Internet Standardization} (\url{https://tools.ietf.org/html}). Certains RFC sont consacrés aux formats des courriels et aux spécifications d'encodage (voir RFC 2822 et 5335 pour commencer). Il y a eu de nombreuses propositions, parfois mises à jour et donc parfois rendues caduques, ce qui peut expliquer certains problèmes de compatibilité.}. En particulier, l'absence de certaines métadonnées peut causer un ré-encodage erroné des blocs de citation à chaque échange. De plus, les programmes clients peuvent intégrer leurs propres mécanismes pour citer les précédents messages, ou encore tronquer les lignes trop longues\footnote{Fonctionnalité utilisée pour rendre le texte lisible sans avoir à invoquer la barre de défilement horizontale. Les phrases sont généralement découpées en segments d'environ 80 caractères.}. Deuxièmement, accéder aux messages originels peut permettre de prendre en compte certains traits contextuels (comme la disposition visuelle par exemple). Troisièmement, pour aller plus loin, le contexte originel du texte extrait contient également de l'information sur la segmentation d'un message. Par exemple, une phrase du message originel, qui ne serait pas présente dans la réponse, mais qui suit une phrase alignée, peut être considérée comme débutant un nouveau segment. Pour ces trois raisons, en plus d'identifier les lignes citées, nous devons suivre une procédure d'alignement pour obtenir leurs versions d'origine. 
 
 La procédure de génération des données annotées suit les étapes suivantes :
 
@@ -125,7 +125,7 @@ La procédure de génération des données annotées suit les étapes suivantes 
     \end{enumerate}
 \end{enumerate}
 
-Les paires de messages sources et leurs réponses sont constituées à partir des champs \emph{in-reply-to} de leurs entêtes.
+Les paires de messages sources et leurs réponses sont constituées à partir des champs \emph{In-Reply-To} de leurs entêtes\footnote{Les champs des entêtes de courriels sont définis par le RFC 5322. Le champ \emph{In-Reply-To} contient l'identifiant (\emph{Message-ID}) du message parent (c'est à dire le message auquel celui-ci fait réponse).}.
 
 % Les tokens sont utilisés pour indexer les lignes citées et les phrases.
 
@@ -133,16 +133,16 @@ Les paires de messages sources et leurs réponses sont constituées à partir de
 
 \label{subsec:tokenization}
 
-L'approche employée pour la tokenisation des messages suit globalement la stratégie du système de tokenisation en mots qui vient avec le \textit{TreeTagger} \cite{schmid:94b}, c'est à dire qu'il se concentre sur les marques de segmentation et l'analyse récursive des marques de ponctuation qui "collent" les débuts et fins de mots et phrases.
+Nous n'utilisons pas de segmenteur en phrases ou de tokeniseur connu parce qu'il n'en existe pas de disponible spécialisé pour les courriels. En effet ces documents ont des caractéristiques spécifiques qu'il faut considérer comparativement aux segmenteurs de texte écrits en anglais canonique. L'approche employée pour la tokenisation des messages suit globalement la stratégie du système de tokenisation en mots qui vient avec le \textit{TreeTagger} \cite{schmid:94b}, c'est à dire qu'il se concentre sur les marques de segmentation et l'analyse récursive des marques de ponctuation qui "collent" les débuts et fins de mots et phrases.
 
 \begin{enumerate}
     \item[] Pour chaque courriel :
     \begin{enumerate}
-        \item Reconnaissance des marques de segmentation
+        \item Reconnaissance des marques de segmentation (phrases)
         \item Correction des segmentations abusives
         \item Pour chaque phrase obtenue :
         \begin{enumerate}
-            \item Reconnaissance des marques de segmentation
+            \item Reconnaissance des marques de segmentation (mots)
             \item Correction des segmentations abusives
         \end{enumerate}
     \end{enumerate}
